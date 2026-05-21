@@ -12,9 +12,9 @@ Completed:
 - Basic UI and body selection.
 - Physical data separated from visual scale.
 
-## V0.2 - Visual And Interaction Improvements
+## V0.2 - Completed Visual And Interaction Improvements
 
-Current target:
+Completed:
 
 - Follow camera.
 - Selected body highlight.
@@ -23,15 +23,32 @@ Current target:
 - Visual / physics debug panel.
 - Basic Vitest tests.
 
+## V0.3 - Astronomy Accuracy And Orbit Validation
+
+Current phase:
+
+- Robust Kepler solver with convergence metadata and input guards.
+- Julian Date conversion and Debug panel display.
+- `YYYY-MM-DD` date jump control.
+- Improved approximate Moon model.
+- Orbit validation helpers for finite checks, radius bounds, and continuity.
+- Expanded astronomy-focused Vitest coverage.
+
+Known limits:
+
+- Uses local approximate orbital elements, not NASA/JPL Horizons.
+- Moon model is visualization-grade and intended for future replacement.
+- Validation checks numerical sanity and broad orbital ranges, not high-precision ephemeris accuracy.
+
 ## V1 - Kepler Model Precision Improvement
 
 Next phase:
 
-- Better orbital validation.
+- Better orbital validation against external reference data.
 - More accurate Moon model.
-- Optional date input.
+- Optional richer date/time input.
 - More precise simulation date controls.
-- Kepler output comparison against reference data.
+- Kepler output comparison reports.
 
 ## V2 - N-body Demo Activation
 

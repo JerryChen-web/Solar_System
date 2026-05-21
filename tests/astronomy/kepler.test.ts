@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { computeKeplerPositionMeters, solveKeplerEquation } from "../../src/astronomy/kepler";
+import { solveEllipticKeplerEquation } from "../../src/astronomy/keplerSolver";
 import { GRAVITATIONAL_CONSTANT } from "../../src/config/constants";
 import { loadSolarSystemData } from "../../src/data/dataLoader";
 import type { OrbitalElementRecord } from "../../src/types/orbit";
@@ -13,6 +14,24 @@ function expectFiniteVector(vector: { x: number; y: number; z: number }): void {
 }
 
 describe("Kepler solver", () => {
+  it("reports convergence for ordinary elliptical eccentricity", () => {
+    const result = solveEllipticKeplerEquation(1.25, 0.4);
+    expect(result.converged).toBe(true);
+    expect(result.iterations).toBeGreaterThan(0);
+    expect(Number.isFinite(result.eccentricAnomalyRad)).toBe(true);
+  });
+
+  it("handles near-circular orbits stably", () => {
+    const result = solveEllipticKeplerEquation(2.2, 1e-15);
+    expect(result.converged).toBe(true);
+    expect(result.eccentricAnomalyRad).toBeCloseTo(2.2, 12);
+  });
+
+  it("protects against invalid eccentricity input", () => {
+    expect(() => solveEllipticKeplerEquation(1, 1)).toThrow();
+    expect(() => solveEllipticKeplerEquation(1, -0.1)).toThrow();
+  });
+
   it("does not produce NaN for representative mean anomaly and eccentricity", () => {
     const eccentricAnomaly = solveKeplerEquation(1.25, 0.4);
     expect(Number.isNaN(eccentricAnomaly)).toBe(false);
@@ -52,4 +71,3 @@ describe("Kepler solver", () => {
     expect(position.length()).toBeGreaterThan(0);
   });
 });
-

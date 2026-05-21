@@ -1,28 +1,18 @@
 import * as THREE from "three";
 import { AU_METERS } from "../config/constants";
 import type { OrbitalElementRecord } from "../types/orbit";
-
-const TWO_PI = Math.PI * 2;
+import { normalizeRadians, solveEllipticKeplerEquation } from "./keplerSolver";
 
 function degToRad(degrees: number): number {
   return THREE.MathUtils.degToRad(degrees);
 }
 
-function normalizeRadians(angle: number): number {
-  return ((angle % TWO_PI) + TWO_PI) % TWO_PI;
-}
-
 export function solveKeplerEquation(meanAnomalyRad: number, eccentricity: number): number {
-  const normalizedMeanAnomaly = normalizeRadians(meanAnomalyRad);
-  let eccentricAnomaly = eccentricity < 0.8 ? normalizedMeanAnomaly : Math.PI;
-
-  for (let iteration = 0; iteration < 12; iteration += 1) {
-    const f = eccentricAnomaly - eccentricity * Math.sin(eccentricAnomaly) - normalizedMeanAnomaly;
-    const fPrime = 1 - eccentricity * Math.cos(eccentricAnomaly);
-    eccentricAnomaly -= f / fPrime;
+  const result = solveEllipticKeplerEquation(meanAnomalyRad, eccentricity);
+  if (!result.converged || !Number.isFinite(result.eccentricAnomalyRad)) {
+    throw new Error("Kepler equation failed to converge to a finite value.");
   }
-
-  return eccentricAnomaly;
+  return result.eccentricAnomalyRad;
 }
 
 export function computeKeplerPositionMeters(
@@ -30,6 +20,16 @@ export function computeKeplerPositionMeters(
   secondsSinceEpoch: number,
   gravitationalParameterM3S2: number
 ): THREE.Vector3 {
+  if (!Number.isFinite(secondsSinceEpoch) || !Number.isFinite(gravitationalParameterM3S2)) {
+    throw new RangeError("Kepler position inputs must be finite.");
+  }
+  if (!Number.isFinite(element.a_au) || element.a_au <= 0) {
+    throw new RangeError("Semi-major axis must be positive.");
+  }
+  if (!Number.isFinite(element.e) || element.e < 0 || element.e >= 1) {
+    throw new RangeError("Eccentricity must be in the range [0, 1).");
+  }
+
   const semiMajorAxisM = element.a_au * AU_METERS;
   const meanMotionRadS = Math.sqrt(gravitationalParameterM3S2 / Math.pow(semiMajorAxisM, 3));
   const meanAnomalyAtEpoch = degToRad(element.L_deg - element.long_peri_deg);
@@ -61,4 +61,3 @@ export function computeKeplerPositionMeters(
 
   return new THREE.Vector3(x, z, y);
 }
-

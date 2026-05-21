@@ -117,6 +117,15 @@ button:disabled {
   min-width: 0;
 }
 
+.control-row input[type="text"] {
+  width: 100%;
+  border: 1px solid rgba(171, 190, 224, 0.26);
+  border-radius: 6px;
+  color: #eef4ff;
+  background: #10192b;
+  padding: 7px 8px;
+}
+
 .control-row select {
   grid-column: span 2;
   width: 100%;
@@ -125,6 +134,26 @@ button:disabled {
   color: #eef4ff;
   background: #10192b;
   padding: 7px 8px;
+}
+
+.control-row button {
+  border: 1px solid rgba(171, 190, 224, 0.32);
+  border-radius: 6px;
+  color: #f5f8ff;
+  background: #1a2942;
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.date-message {
+  margin: -4px 0 8px 54px;
+  color: #93a4c1;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.date-message.is-error {
+  color: #ffb4a8;
 }
 
 .control-value {

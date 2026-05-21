@@ -1,6 +1,12 @@
 import * as THREE from "three";
+import {
+  dateToSecondsSinceJ2000,
+  parseIsoDateOnly,
+  secondsSinceJ2000ToJulianDate
+} from "./astronomy/julianDate";
 import { formatSimulationDate } from "./astronomy/time";
 import { computeKeplerPositionMeters } from "./astronomy/kepler";
+import { computeMoonPositionMeters } from "./astronomy/moonModel";
 import { rotationRadiansForElapsedSeconds } from "./astronomy/rotationModel";
 import { GRAVITATIONAL_CONSTANT } from "./config/constants";
 import { scaleOrbitVectorMeters, visualRadiusForBody } from "./config/visualScale";
@@ -95,6 +101,7 @@ export class SolarSystemApp {
       },
       onReset: () => {
         this.secondsSinceEpoch = 0;
+        this.controlPanel.setDateInputValue(this.data.simulationConfig.time.epoch.slice(0, 10));
       },
       onModeChange: (mode) => {
         this.mode = mode;
@@ -104,6 +111,9 @@ export class SolarSystemApp {
       },
       onStopFollow: () => {
         this.stopFollow();
+      },
+      onDateJump: (input) => {
+        return this.jumpToDate(input);
       }
     });
     this.debugPanel = new DebugPanel(this.sidePanel);
@@ -261,10 +271,22 @@ export class SolarSystemApp {
     const parentPosition = this.resolveScenePosition(parentBody);
     const parentPhysicalPosition = this.physicalPositionsMeters.get(parentBody.id) ?? new THREE.Vector3();
     const mu = GRAVITATIONAL_CONSTANT * (parentBody.mass_kg + body.mass_kg);
-    const relativeMeters = computeKeplerPositionMeters(element, this.secondsSinceEpoch, mu);
+    const moonPosition =
+      body.id === "moon"
+        ? computeMoonPositionMeters(
+            element,
+            parentBody,
+            body,
+            parentPhysicalPosition,
+            this.secondsSinceEpoch
+          )
+        : undefined;
+    const relativeMeters =
+      moonPosition?.relativeToEarthMeters ??
+      computeKeplerPositionMeters(element, this.secondsSinceEpoch, mu);
     const relativeScene = scaleOrbitVectorMeters(relativeMeters, body, this.data.visualConfig);
     const position = parentPosition.clone().add(relativeScene);
-    const physicalPosition = parentPhysicalPosition.clone().add(relativeMeters);
+    const physicalPosition = moonPosition?.heliocentricMeters ?? parentPhysicalPosition.clone().add(relativeMeters);
 
     this.scenePositions.set(body.id, position);
     this.physicalPositionsMeters.set(body.id, physicalPosition);
@@ -332,6 +354,7 @@ export class SolarSystemApp {
     this.debugPanel.update({
       currentMode: this.mode,
       simulationDateText,
+      julianDate: secondsSinceJ2000ToJulianDate(this.secondsSinceEpoch),
       timeScaleSecondsPerRealSecond: this.timeScaleSecondsPerRealSecond,
       readableTimeScale: formatTimeScale(this.timeScaleSecondsPerRealSecond),
       selectedBodyId: this.selectedBodyId,
@@ -344,5 +367,16 @@ export class SolarSystemApp {
       rendererDrawCalls: this.renderer.info.render.calls,
       nBodyStatus: "N-body: scaffold only"
     });
+  }
+
+  private jumpToDate(input: string): { ok: true; isoDate: string } | { ok: false; error: string } {
+    const parsed = parseIsoDateOnly(input);
+    if (!parsed.ok) {
+      return parsed;
+    }
+
+    this.secondsSinceEpoch = dateToSecondsSinceJ2000(parsed.date);
+    this.updateBodies();
+    return { ok: true, isoDate: parsed.isoDate };
   }
 }

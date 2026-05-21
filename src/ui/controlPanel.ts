@@ -12,6 +12,7 @@ interface ControlPanelOptions {
   onModeChange: (mode: SimulationMode) => void;
   onFollow: () => void;
   onStopFollow: () => void;
+  onDateJump: (input: string) => { ok: true; isoDate: string } | { ok: false; error: string };
 }
 
 export class ControlPanel {
@@ -23,6 +24,8 @@ export class ControlPanel {
   private readonly followButton: HTMLButtonElement;
   private readonly followTargetElement: HTMLElement;
   private readonly selectedBodyElement: HTMLElement;
+  private readonly dateInput: HTMLInputElement;
+  private readonly dateMessage: HTMLElement;
   private pausedByButton = false;
 
   constructor(container: HTMLElement, private readonly options: ControlPanelOptions) {
@@ -85,6 +88,23 @@ export class ControlPanel {
     modeSelect.value = options.simulationConfig.default_mode;
     modeRow.appendChild(modeSelect);
 
+    const dateRow = document.createElement("label");
+    dateRow.className = "control-row";
+    dateRow.textContent = "Date";
+    this.dateInput = document.createElement("input");
+    this.dateInput.type = "text";
+    this.dateInput.inputMode = "numeric";
+    this.dateInput.placeholder = "YYYY-MM-DD";
+    this.dateInput.value = options.simulationConfig.time.epoch.slice(0, 10);
+    const jumpButton = document.createElement("button");
+    jumpButton.type = "button";
+    jumpButton.textContent = "Jump";
+    dateRow.append(this.dateInput, jumpButton);
+
+    this.dateMessage = document.createElement("div");
+    this.dateMessage.className = "date-message";
+    this.dateMessage.textContent = "Date input uses UTC midnight.";
+
     const buttonRow = document.createElement("div");
     buttonRow.className = "button-row";
     this.pauseButton = document.createElement("button");
@@ -107,7 +127,7 @@ export class ControlPanel {
 
     const modeNote = document.createElement("p");
     modeNote.className = "mode-note";
-    modeNote.textContent = "N-body is scaffolded for V2; V0.2 runs the Kepler path.";
+    modeNote.textContent = "N-body is scaffolded for V2; V0.3 runs the Kepler path with local approximate astronomy data.";
 
     panel.append(
       title,
@@ -117,6 +137,8 @@ export class ControlPanel {
       speedLabel,
       presetRow,
       modeRow,
+      dateRow,
+      this.dateMessage,
       buttonRow,
       followRow,
       modeNote
@@ -146,6 +168,14 @@ export class ControlPanel {
     });
     this.followButton.addEventListener("click", options.onFollow);
     stopFollowButton.addEventListener("click", options.onStopFollow);
+    jumpButton.addEventListener("click", () => {
+      this.jumpToInputDate();
+    });
+    this.dateInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        this.jumpToInputDate();
+      }
+    });
 
     this.applyTimeScale(options.simulationConfig.time.default_time_scale_seconds_per_real_second, true);
     this.setSelectedBody(null);
@@ -170,6 +200,12 @@ export class ControlPanel {
     this.applyTimeScale(secondsPerRealSecond, false);
   }
 
+  setDateInputValue(isoDate: string): void {
+    this.dateInput.value = isoDate;
+    this.dateMessage.textContent = "Date input uses UTC midnight.";
+    this.dateMessage.classList.remove("is-error");
+  }
+
   private applyTimeScale(secondsPerRealSecond: number, emit: boolean): void {
     const clampedSeconds = Math.min(
       Math.max(secondsPerRealSecond, this.options.simulationConfig.time.min_time_scale),
@@ -183,5 +219,16 @@ export class ControlPanel {
       this.options.onTimeScaleChange(clampedSeconds);
     }
   }
-}
 
+  private jumpToInputDate(): void {
+    const result = this.options.onDateJump(this.dateInput.value);
+    if (result.ok) {
+      this.dateInput.value = result.isoDate;
+      this.dateMessage.textContent = `Jumped to ${result.isoDate} UTC.`;
+      this.dateMessage.classList.remove("is-error");
+    } else {
+      this.dateMessage.textContent = result.error;
+      this.dateMessage.classList.add("is-error");
+    }
+  }
+}

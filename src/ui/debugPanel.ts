@@ -23,6 +23,7 @@ export class DebugPanel {
     const rows: Array<[string, string]> = [
       ["Current mode", state.currentMode],
       ["Simulation date", state.simulationDateText],
+      ["Julian Date", formatNumber(state.julianDate, "JD", 5)],
       ["Time scale", formatNumber(state.timeScaleSecondsPerRealSecond, "s/s", 0)],
       ["Readable scale", state.readableTimeScale],
       ["Selected body", formatOptional(state.selectedBodyId)],
@@ -49,4 +50,3 @@ export class DebugPanel {
     }
   }
 }
-

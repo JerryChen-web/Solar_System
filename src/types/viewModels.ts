@@ -15,6 +15,7 @@ export interface BodyInfoViewModel {
 export interface DebugPanelState {
   currentMode: SimulationMode;
   simulationDateText: string;
+  julianDate: number;
   timeScaleSecondsPerRealSecond: number;
   readableTimeScale: string;
   selectedBodyId: string | null;
@@ -27,4 +28,3 @@ export interface DebugPanelState {
   rendererDrawCalls: number;
   nBodyStatus: string;
 }
-
