@@ -8,6 +8,12 @@ import { formatSimulationDate } from "./astronomy/time";
 import { computeKeplerPositionMeters } from "./astronomy/kepler";
 import { computeMoonPositionMeters } from "./astronomy/moonModel";
 import { rotationRadiansForElapsedSeconds } from "./astronomy/rotationModel";
+import {
+  buildValidationSummary,
+  clonePositions,
+  type ContinuityHistory,
+  type ValidationSummary
+} from "./astronomy/validationSummary";
 import { GRAVITATIONAL_CONSTANT } from "./config/constants";
 import { scaleOrbitVectorMeters, visualRadiusForBody } from "./config/visualScale";
 import { loadSolarSystemData, type SolarSystemData } from "./data/dataLoader";
@@ -28,6 +34,8 @@ import { ControlPanel } from "./ui/controlPanel";
 import { DebugPanel } from "./ui/debugPanel";
 import { formatTimeScale } from "./ui/formatters";
 import type { SimulationMode } from "./ui/modeSwitcher";
+import { PositionTable } from "./ui/positionTable";
+import { ValidationDashboard } from "./ui/validationDashboard";
 
 interface BodyNode {
   body: BodyRecord;
@@ -50,6 +58,8 @@ export class SolarSystemApp {
   private readonly bodyInfoPanel: BodyInfoPanel;
   private readonly controlPanel: ControlPanel;
   private readonly debugPanel: DebugPanel;
+  private readonly validationDashboard: ValidationDashboard;
+  private readonly positionTable: PositionTable;
   private readonly clock = new THREE.Clock();
   private readonly bodyNodes = new Map<string, BodyNode>();
   private readonly scenePositions = new Map<string, THREE.Vector3>();
@@ -64,6 +74,8 @@ export class SolarSystemApp {
   private followTargetId: string | null = null;
   private mode: SimulationMode = "kepler";
   private orbitCount = 0;
+  private validationContinuityHistory: ContinuityHistory | null = null;
+  private latestValidationSummary: ValidationSummary | null = null;
 
   constructor(private readonly root: HTMLElement) {
     this.root.innerHTML = "";
@@ -101,6 +113,7 @@ export class SolarSystemApp {
       },
       onReset: () => {
         this.secondsSinceEpoch = 0;
+        this.validationContinuityHistory = null;
         this.controlPanel.setDateInputValue(this.data.simulationConfig.time.epoch.slice(0, 10));
       },
       onModeChange: (mode) => {
@@ -117,6 +130,8 @@ export class SolarSystemApp {
       }
     });
     this.debugPanel = new DebugPanel(this.sidePanel);
+    this.validationDashboard = new ValidationDashboard(this.sidePanel);
+    this.positionTable = new PositionTable(this.sidePanel);
 
     this.mode = this.data.simulationConfig.default_mode;
     this.selectBody("sun");
@@ -209,6 +224,7 @@ export class SolarSystemApp {
     }
 
     this.updateBodies();
+    this.updateValidationSummary();
     this.updateFollowCamera(deltaSeconds);
     this.controls.update();
     this.labelLayer.update(this.camera);
@@ -365,7 +381,11 @@ export class SolarSystemApp {
       cameraTarget: this.controls.target.clone(),
       rendererTriangles: this.renderer.info.render.triangles,
       rendererDrawCalls: this.renderer.info.render.calls,
-      nBodyStatus: "N-body: scaffold only"
+      nBodyStatus: "N-body: scaffold only",
+      validationCheckedCount: this.latestValidationSummary?.checkedCount ?? 0,
+      validationPassedCount: this.latestValidationSummary?.passedCount ?? 0,
+      validationWarningCount: this.latestValidationSummary?.warningCount ?? 0,
+      validationErrorCount: this.latestValidationSummary?.errorCount ?? 0
     });
   }
 
@@ -376,7 +396,28 @@ export class SolarSystemApp {
     }
 
     this.secondsSinceEpoch = dateToSecondsSinceJ2000(parsed.date);
+    this.validationContinuityHistory = null;
     this.updateBodies();
+    this.updateValidationSummary();
     return { ok: true, isoDate: parsed.isoDate };
+  }
+
+  private updateValidationSummary(): void {
+    const summary = buildValidationSummary({
+      bodies: this.data.bodies,
+      bodyById: this.data.bodyById,
+      orbitalElementByBodyId: this.data.orbitalElementByBodyId,
+      positionsMeters: this.physicalPositionsMeters,
+      secondsSinceEpoch: this.secondsSinceEpoch,
+      continuityHistory: this.validationContinuityHistory
+    });
+
+    this.latestValidationSummary = summary;
+    this.validationDashboard.update(summary);
+    this.positionTable.update(summary.positionRows);
+    this.validationContinuityHistory = {
+      positionsMeters: clonePositions(this.physicalPositionsMeters),
+      secondsSinceEpoch: this.secondsSinceEpoch
+    };
   }
 }

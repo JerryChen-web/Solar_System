@@ -27,4 +27,8 @@ export interface DebugPanelState {
   rendererTriangles: number;
   rendererDrawCalls: number;
   nBodyStatus: string;
+  validationCheckedCount: number;
+  validationPassedCount: number;
+  validationWarningCount: number;
+  validationErrorCount: number;
 }

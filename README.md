@@ -2,7 +2,7 @@
 
 Solar_System is a Vite + TypeScript + Three.js Solar System visualization MVP. It uses local demo data, a Kepler orbit model, and a modular rendering/UI structure that can grow toward higher-precision astronomy data pipelines later.
 
-V0.3 focuses on astronomy accuracy and orbit validation while preserving all V0.2 interaction features. It still does not call NASA APIs, download textures, use SPICE, or include large datasets.
+V0.4 adds a lightweight local validation dashboard and reference comparison layer on top of V0.3. It still does not call NASA APIs, download textures, use SPICE, or include large datasets.
 
 ## Requirements
 
@@ -24,14 +24,24 @@ npm.cmd audit --audit-level=moderate
 
 Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 
-## V0.3 Features
+## V0.4 Features
 
-- More robust Kepler equation solver with tolerance, iteration limit, near-circular handling, convergence metadata, and invalid-input guards.
+- Validation Dashboard with PASS/WARN/ERROR status for Sun, planets, and Moon.
+- Sun special validation as the reference body near origin.
+- Position Table with x/y/z in AU, distance from Sun, and validation status.
+- Moon-Earth distance check with local approximate range validation.
+- Debug panel validation summary counts: checked, pass, warning, and error.
+- Continuity history handling with safe reset on date jump.
+- Cached/throttled dashboard and table rendering to keep animation smooth.
+- Vitest coverage for validation summaries, Moon-Earth distance, Sun reference behavior, continuity reset, and table formatting.
+
+## V0.3 Features Preserved
+
+- Robust Kepler equation solver with convergence handling.
 - Julian Date utilities and Debug panel Julian Date display.
 - `YYYY-MM-DD` date input for jumping simulation time to a specific UTC date.
-- Improved approximate Moon model using Earth-relative lunar orbital elements, then composing with Earth's heliocentric position.
-- Pure orbit validation helpers for finite checks, perihelion/aphelion radius bounds, and continuity checks.
-- Expanded Vitest coverage for Kepler convergence, Julian Date conversion, orbital element conversion, Moon model validation, and orbit validation.
+- Improved approximate Moon model using Earth-relative lunar orbital elements.
+- Pure orbit validation helpers for finite checks, radius bounds, and continuity.
 
 ## V0.2 Features Preserved
 
@@ -51,12 +61,13 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 - Invalid date input shows a message and leaves the simulation date unchanged.
 - Use `Pause` / `Play` to stop or resume simulation time without changing the selected time scale.
 - Use `Reset` to return the simulation date to the configured J2000 epoch.
-- Open or collapse the `Debug` section in the right panel to inspect simulation date, Julian Date, camera target, and renderer state.
+- Open the `Debug`, `Validation Dashboard`, and `Position Table` sections in the right panel to inspect validation state.
 
 ## Current Accuracy Limits
 
-- V0.3 uses local approximate orbital elements and lightweight Kepler propagation.
-- The Moon model is improved over V0.2 but is still approximate and not a NASA/JPL ephemeris.
+- V0.4 reference comparison is local approximate validation, not NASA/JPL Horizons precision comparison.
+- Planet distance ranges are based on local orbital elements and sanity tolerances.
+- The Moon-Earth distance check uses a local approximate range, not a high-precision lunar ephemeris.
 - Planet positions are suitable for visualization and structural validation, not high-precision scientific measurement.
 - NASA/JPL Horizons, SPICE kernels, state-vector propagation, and full N-body simulation remain future phases.
 

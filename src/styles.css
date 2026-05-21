@@ -235,7 +235,9 @@ button:disabled {
   padding: 0;
 }
 
-.debug-panel summary {
+.debug-panel summary,
+.validation-dashboard summary,
+.position-table-panel summary {
   cursor: pointer;
   list-style-position: inside;
   padding: 12px 14px;
@@ -251,6 +253,128 @@ button:disabled {
 .debug-rows .info-row {
   grid-template-columns: minmax(88px, 0.9fr) minmax(0, 1.1fr);
   font-size: 12px;
+}
+
+.validation-dashboard,
+.position-table-panel {
+  padding: 0;
+}
+
+.validation-dashboard-content {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.validation-totals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  color: #93a4c1;
+  font-size: 12px;
+}
+
+.validation-totals strong {
+  color: #eef4ff;
+}
+
+.moon-distance-check {
+  display: grid;
+  gap: 6px;
+  border-top: 1px solid rgba(171, 190, 224, 0.12);
+  padding-top: 10px;
+}
+
+.moon-distance-check h3 {
+  margin: 0;
+  color: #d8e5ff;
+  font-size: 13px;
+}
+
+.validation-list {
+  display: grid;
+  gap: 6px;
+}
+
+.validation-row {
+  display: grid;
+  grid-template-columns: minmax(80px, 1fr) minmax(70px, auto) auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.validation-row span {
+  color: #d7e2f7;
+}
+
+.validation-row strong {
+  color: #9db4da;
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 46px;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.status-pass {
+  border: 1px solid rgba(102, 224, 163, 0.42);
+  color: #9ff0c2;
+  background: rgba(38, 126, 85, 0.18);
+}
+
+.status-warn {
+  border: 1px solid rgba(255, 198, 92, 0.5);
+  color: #ffd891;
+  background: rgba(147, 101, 31, 0.22);
+}
+
+.status-error {
+  border: 1px solid rgba(255, 126, 112, 0.52);
+  color: #ffb4a8;
+  background: rgba(142, 54, 48, 0.24);
+}
+
+.position-table-scroll {
+  overflow-x: auto;
+  padding: 0 10px 12px;
+}
+
+.position-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.position-table th,
+.position-table td {
+  border-bottom: 1px solid rgba(171, 190, 224, 0.12);
+  padding: 6px 5px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.position-table th:first-child,
+.position-table td:first-child {
+  text-align: left;
+}
+
+.position-table th {
+  color: #9db4da;
+  font-weight: 600;
+}
+
+.position-table td {
+  color: #eef4ff;
 }
 
 .body-label {

@@ -34,6 +34,10 @@ export class DebugPanel {
       ["Camera target", formatVector(state.cameraTarget)],
       ["Triangles", formatNumber(state.rendererTriangles, "", 0)],
       ["Draw calls", formatNumber(state.rendererDrawCalls, "", 0)],
+      ["Checked bodies", String(state.validationCheckedCount)],
+      ["Validation pass", String(state.validationPassedCount)],
+      ["Validation warn", String(state.validationWarningCount)],
+      ["Validation error", String(state.validationErrorCount)],
       ["N-body", state.nBodyStatus],
       ["Active mode", "Kepler"]
     ];

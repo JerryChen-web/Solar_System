@@ -23,9 +23,9 @@ Completed:
 - Visual / physics debug panel.
 - Basic Vitest tests.
 
-## V0.3 - Astronomy Accuracy And Orbit Validation
+## V0.3 - Completed Astronomy Accuracy And Orbit Validation
 
-Current phase:
+Completed:
 
 - Robust Kepler solver with convergence metadata and input guards.
 - Julian Date conversion and Debug panel display.
@@ -34,13 +34,26 @@ Current phase:
 - Orbit validation helpers for finite checks, radius bounds, and continuity.
 - Expanded astronomy-focused Vitest coverage.
 
+## V0.4 - Validation Dashboard And Reference Comparison
+
+Current phase:
+
+- Lightweight Validation Dashboard.
+- Local approximate reference range comparison.
+- Sun reference-body validation.
+- Position Table with current x/y/z and distance values.
+- Moon-Earth distance check.
+- Debug panel validation summary counts.
+- Cached/throttled validation UI rendering.
+- Continuity history reset on date jump.
+
 Known limits:
 
-- Uses local approximate orbital elements, not NASA/JPL Horizons.
-- Moon model is visualization-grade and intended for future replacement.
+- V0.4 reference comparison is local approximate validation, not NASA/JPL Horizons precision comparison.
 - Validation checks numerical sanity and broad orbital ranges, not high-precision ephemeris accuracy.
+- Moon-Earth range is approximate and intended for future replacement.
 
-## V1 - Kepler Model Precision Improvement
+## V0.5 / V1 - Kepler Model Precision Improvement
 
 Next phase:
 
