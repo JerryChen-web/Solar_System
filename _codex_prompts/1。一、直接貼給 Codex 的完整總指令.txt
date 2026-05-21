@@ -1,0 +1,82 @@
+你現在位於 Windows 工作區：
+C:\AI\Codex\Solar_System
+
+請建立一個完整的「太陽系 Solar_System 物理模型」專案。
+
+專案定位：
+這不是單純的太陽系動畫，而是融合 NASA/JPL 公開天文資料、Kepler 軌道模型、N-body 物理引擎、Three.js/WebGL 視覺化、資料分層架構，並預留未來擴充到類 OpenSpace 版本的太陽系物理視覺模型。
+
+最高限制：
+1. 只允許在目前工作區 C:\AI\Codex\Solar_System 內建立、修改、刪除檔案。
+2. 不要修改工作區外任何檔案。
+3. 不要刪除使用者既有檔案，除非明確要求。
+4. 第一階段不要下載大型貼圖。
+5. 第一階段不要直接連 NASA API。
+6. 第一階段先做 demo data + 可執行 MVP。
+7. 每完成一個階段，都必須保持 npm run dev 可以啟動。
+
+技術堆疊：
+1. Frontend：Vite + TypeScript + Three.js
+2. Data tools：Python 3.11+，用於後續 NASA/JPL Horizons 資料抓取與轉換
+3. Rendering：Three.js
+4. Physics：Kepler orbit mode + 預留 N-body mode
+5. File format：JSON / CSV / Markdown
+6. 單位系統：所有真實物理資料使用 SI units，也就是 meter、kilogram、second、radian
+
+專案第一版 MVP 必須完成：
+1. 建立 Vite + TypeScript + Three.js 專案。
+2. 建立完整資料夾架構。
+3. 建立 Sun + 8 planets + Moon 的 demo data。
+4. 建立 Kepler orbit mode。
+5. 顯示太陽、八大行星、月球、軌道線。
+6. 加入時間倍率控制。
+7. 加入視覺縮放系統。
+8. 預留 N-body physics mode 架構。
+9. 建立 README.md、AGENTS.md、PROJECT_SPEC.md。
+10. 建立 docs/data_sources.md、docs/version_plan.md、docs/physics_model.md、docs/visual_model.md。
+11. 建立 data/processed/source_registry.json。
+12. 建立 data/schema/*.schema.json。
+13. npm install 與 npm run dev 必須可以執行。
+
+核心資料原則：
+1. 真實物理資料與視覺化資料必須分開。
+2. 不可以把 visual scale 當成真實距離或真實半徑。
+3. 所有物理運算使用 SI 單位。
+4. 顯示時才轉成 visual units。
+5. 所有資料來源必須記錄在 source_registry.json。
+6. NASA/JPL/IAU/USGS/OpenSpace/Celestia/Stellarium 等資料或專案只能作為公開資料來源或架構參考，不能直接複製未確認授權的素材或程式碼。
+
+資料來源優先級：
+S 級：
+- NASA/JPL Horizons：state vectors、orbital elements
+- JPL Planetary Physical Parameters：質量、半徑、密度、GM 等
+- NASA / NSSDCA / Planetary Fact Sheets：行星基本資料
+- IAU WGCCRE：自轉軸、prime meridian、行星座標系
+- USGS Astrogeology：planetary maps、topography、geologic maps
+
+A 級：
+- OpenSpace：資料分層、scene graph、時間控制、宇宙視覺化架構參考
+- Celestia：多尺度太空自由飛行與天體 catalog 參考
+- Stellarium：地球觀測者視角與星空模式參考
+
+第一階段不要做：
+1. 不要做完整 NASA/JPL 即時 API 抓取。
+2. 不要導入 SPICE kernel。
+3. 不要下載大型 4K/8K 貼圖。
+4. 不要做任務軌跡、小行星、彗星、探測器。
+5. 不要加入 React、Tailwind、資料庫、Docker，除非後續階段要求。
+6. 不要過度抽象化，先做乾淨、可執行、可擴充的 MVP。
+
+請先完成 V0.1：
+- 專案初始化
+- 完整資料夾架構
+- Three.js 場景
+- Sun + 8 planets + Moon
+- Kepler orbit animation
+- 時間倍率 UI
+- 軌道線
+- 基本相機控制
+- README 與文件
+- source_registry
+- schema
+- 可用 npm run dev 啟動

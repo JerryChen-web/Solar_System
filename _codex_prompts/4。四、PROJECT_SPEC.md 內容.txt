@@ -1,0 +1,165 @@
+# Solar_System Project Specification
+
+## 1. Project Vision
+Solar_System is a high-quality web-based Solar System physical visualization model. It combines public astronomy data, orbital mechanics, N-body physics architecture, and 3D visualization.
+
+The long-term goal is to evolve from a simple MVP into an OpenSpace-like educational and scientific visualization platform.
+
+## 2. Development Philosophy
+The project follows this principle:
+
+Real physical model ≠ Visual display model
+
+All physical values must remain scientifically meaningful. Visual scaling is only used when rendering objects to screen.
+
+## 3. Core Modes
+
+### 3.1 Kepler Orbit Mode
+Uses J2000 orbital elements to compute approximate planetary positions.
+
+Use this mode for:
+- smooth MVP animation
+- educational display
+- stable orbit visualization
+
+### 3.2 N-body Physics Mode
+Uses mass, position, velocity, and gravitational acceleration.
+
+Use this mode for:
+- physics simulation
+- mutual gravity
+- state vector propagation
+- validation against JPL Horizons
+
+### 3.3 Future Ephemeris Mode
+Uses NASA/JPL Horizons or SPICE kernels.
+
+Use this mode for:
+- high precision planetary positions
+- mission trajectories
+- spacecraft paths
+- asteroids and comets
+
+## 4. MVP Bodies
+- Sun
+- Mercury
+- Venus
+- Earth
+- Moon
+- Mars
+- Jupiter
+- Saturn
+- Uranus
+- Neptune
+
+## 5. Data Source Priority
+
+### S Tier
+- NASA/JPL Horizons
+- JPL Planetary Physical Parameters
+- NASA Planetary Fact Sheets
+- IAU WGCCRE
+- USGS Astrogeology
+
+### A Tier
+- OpenSpace
+- Celestia
+- Stellarium
+- Skyfield
+- poliastro
+
+## 6. Version Plan
+
+### V0: Static Display
+Goal:
+Display Sun + 8 planets + Moon with scaled distances and radii.
+
+Features:
+- Three.js scene
+- placeholder materials
+- orbit rings
+- labels
+- camera control
+
+### V1: Kepler Orbit Model
+Goal:
+Animate planets using orbital elements.
+
+Features:
+- J2000 orbital elements
+- Kepler solver
+- time speed control
+- current simulation date
+- body info panel
+
+### V2: N-body Physics Model
+Goal:
+Add physical simulation architecture.
+
+Features:
+- gravitational acceleration
+- Velocity Verlet or Leapfrog integrator
+- state vectors
+- Kepler/N-body mode switch
+- SI unit simulation
+
+### V3: NASA/JPL Data Pipeline
+Goal:
+Fetch and convert authoritative astronomical data.
+
+Features:
+- JPL Horizons vector fetching
+- raw data archive
+- processed JSON output
+- validation against Horizons
+- source registry
+
+### V4: Visual Precision
+Goal:
+Improve realism.
+
+Features:
+- planet textures
+- Earth cloud layer
+- Saturn ring
+- atmosphere placeholders
+- sunlight and shadow
+- camera follow target
+
+### V5: OpenSpace-like System
+Goal:
+Build a dataset-driven space visualization platform.
+
+Features:
+- mission trajectories
+- asteroids
+- comets
+- spacecraft
+- SPICE/Horizons data layer
+- timeline manager
+- dataset layer manager
+- observer mode
+- multi-scale navigation
+- scientific validation panel
+
+## 7. Acceptance Criteria for V0.1
+- npm install succeeds
+- npm run dev succeeds
+- browser displays Sun + planets + Moon
+- orbit lines are visible
+- planets move in Kepler mode
+- time scale can be changed
+- user can select a body and see basic info
+- code is modular
+- source_registry.json exists
+- README explains how to run the project
+
+## 8. Non-goals for V0.1
+- No NASA live API
+- No SPICE kernels
+- No large textures
+- No asteroids
+- No spacecraft
+- No React
+- No database
+- No Docker

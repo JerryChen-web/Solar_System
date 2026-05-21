@@ -1,0 +1,36 @@
+{
+  "project_name": "Solar_System",
+  "version": "0.1.0",
+  "unit_system": "SI",
+  "default_mode": "kepler",
+  "available_modes": ["kepler", "nbody_placeholder"],
+  "reference_frame": "J2000",
+  "center": "sun",
+  "time": {
+    "epoch": "2000-01-01T12:00:00Z",
+    "default_time_scale_seconds_per_real_second": 86400,
+    "min_time_scale": 0,
+    "max_time_scale": 31557600
+  },
+  "physics": {
+    "G_m3_kg_s2": 6.6743e-11,
+    "AU_m": 149597870700,
+    "day_s": 86400,
+    "julian_year_s": 31557600,
+    "integrator": "velocity_verlet",
+    "time_step_s": 3600,
+    "enable_mutual_gravity": false,
+    "enable_relativity": false,
+    "enable_solar_radiation_pressure": false
+  },
+  "visual": {
+    "distance_scale_mode": "logarithmic_or_custom",
+    "radius_scale_mode": "per_body_scale",
+    "show_orbits": true,
+    "show_labels": true,
+    "show_grid": false,
+    "show_axes": false,
+    "camera_default_target": "sun"
+  }
+}
+

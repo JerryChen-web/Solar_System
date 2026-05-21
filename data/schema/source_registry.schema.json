@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solar_System Source Registry",
+  "type": "object",
+  "required": ["sources"],
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "tier", "url", "type", "used_for", "status", "notes"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "tier": { "type": "string" },
+          "url": { "type": "string" },
+          "type": { "type": "string" },
+          "used_for": { "type": "array", "items": { "type": "string" } },
+          "status": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+

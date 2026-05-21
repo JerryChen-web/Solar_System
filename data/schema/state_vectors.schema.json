@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solar_System State Vectors",
+  "type": "object",
+  "required": ["unit_system", "epoch", "states"],
+  "properties": {
+    "unit_system": { "const": "SI" },
+    "epoch": { "type": "string" },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["body_id", "position_m", "velocity_m_s", "mass_kg"],
+        "properties": {
+          "body_id": { "type": "string" },
+          "position_m": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+          "velocity_m_s": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+          "mass_kg": { "type": "number" }
+        }
+      }
+    }
+  }
+}
+

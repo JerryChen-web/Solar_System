@@ -1,0 +1,82 @@
+#任務 1：建立 V0.1 MVP
+請先只完成 V0.1 MVP。
+
+範圍：
+1. 初始化 Vite + TypeScript + Three.js。
+2. 建立完整資料夾架構。
+3. 建立 README.md、AGENTS.md、PROJECT_SPEC.md。
+4. 建立 data/processed/bodies.seed.json。
+5. 建立 data/processed/orbital_elements_j2000.seed.json。
+6. 建立 data/processed/simulation_config.json。
+7. 建立 data/processed/visual_config.json。
+8. 建立 data/processed/source_registry.json。
+9. 建立基本 Three.js 場景。
+10. 顯示 Sun + 8 planets + Moon。
+11. 顯示軌道線。
+12. 加入基本相機控制。
+13. npm run dev 必須可以啟動。
+
+不要加入 NASA API。
+不要下載大型貼圖。
+不要加入 SPICE。
+不要加入小行星、彗星、探測器。
+
+#任務 2：加入 Kepler mode
+請在目前 V0.1 基礎上加入 Kepler orbit mode。
+
+要求：
+1. 讀取 orbital_elements_j2000.seed.json。
+2. 建立 src/astronomy/kepler.ts。
+3. 解 Kepler equation。
+4. 將軌道元素轉成 3D position。
+5. 行星沿橢圓軌道運動。
+6. 月球用簡化軌道繞地球。
+7. 加入 pause/play/reset。
+8. 加入 time speed control。
+9. 顯示目前 simulation date。
+10. 保持 npm run dev 可執行。
+
+#任務 3：加入 N-body 架構
+請加入 N-body physics mode 的架構，但先以 demo state vectors 測試。
+
+要求：
+1. 建立 src/physics/gravity.ts。
+2. 建立 src/physics/nbodyEngine.ts。
+3. 建立 src/physics/integrators.ts。
+4. 使用 SI 單位。
+5. 使用 G = 6.67430e-11。
+6. 建立 BodyState type，包括 position_m、velocity_m_s、mass_kg。
+7. 實作 Velocity Verlet 或 Leapfrog。
+8. 加入 mode switch：Kepler / N-body。
+9. N-body 初版可以先只跑 demo，不追求高精度。
+10. 保持 visual scale 與 physical value 分離。
+
+#任務 4：建立 NASA/JPL pipeline
+請建立 NASA/JPL Horizons 資料 pipeline，但不要自動執行下載。
+
+要求：
+1. 建立 tools/fetch_horizons_vectors.py。
+2. 建立 tools/fetch_horizons_elements.py。
+3. 建立 tools/convert_horizons_to_json.py。
+4. 建立 tools/validate_orbit_error.py。
+5. 建立 docs/nasa_jpl_pipeline.md。
+6. 說明如何指定 target、center、start_time、stop_time、step_size。
+7. 輸出 raw data 到 data/raw/jpl_horizons。
+8. 輸出 processed data 到 data/processed/state_vectors.json。
+9. 更新 source_registry.json。
+10. 不要現在就下載大型資料。
+
+#任務 5：建立 V5 類 OpenSpace 架構預留
+請在不破壞目前 MVP 的情況下，預留 V5 類 OpenSpace 架構。
+
+要求：
+1. 建立 src/data/layerManager.ts。
+2. 建立 src/data/datasetRegistry.ts。
+3. 建立 src/rendering/trajectoryLayer.ts。
+4. 建立 src/rendering/smallBodyLayer.ts。
+5. 建立 src/rendering/spacecraftLayer.ts。
+6. 建立 docs/openspace_like_architecture.md。
+7. 建立 data/processed/datasets_manifest.json。
+8. 不要實際載入大量資料。
+9. 只做乾淨接口與文件。
+10. 保持 npm run dev 可以執行。

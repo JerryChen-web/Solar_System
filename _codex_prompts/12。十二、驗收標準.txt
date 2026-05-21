@@ -1,0 +1,8 @@
+請完成後執行以下驗收：
+1. npm install
+2. npm run dev
+3. npm run build
+4. 檢查 TypeScript 是否有錯誤
+5. 檢查是否只修改 Solar_System 工作區內檔案
+6. 簡述新增/修改了哪些檔案
+7. 簡述下一步建議

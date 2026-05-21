@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solar_System Orbital Elements",
+  "type": "object",
+  "required": ["unit_system", "epoch", "elements"],
+  "properties": {
+    "unit_system": { "const": "AU_DEG" },
+    "epoch": { "type": "string" },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["body_id", "a_au", "e", "i_deg", "L_deg", "long_peri_deg", "long_node_deg"],
+        "properties": {
+          "body_id": { "type": "string" },
+          "parent": { "type": "string" },
+          "a_au": { "type": "number" },
+          "e": { "type": "number" },
+          "i_deg": { "type": "number" },
+          "L_deg": { "type": "number" },
+          "long_peri_deg": { "type": "number" },
+          "long_node_deg": { "type": "number" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+

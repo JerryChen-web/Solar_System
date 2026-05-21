@@ -1,0 +1,7 @@
+export const GRAVITATIONAL_CONSTANT = 6.6743e-11;
+export const AU_METERS = 149_597_870_700;
+export const DAY_SECONDS = 86_400;
+export const JULIAN_YEAR_SECONDS = 31_557_600;
+export const J2000_EPOCH_ISO = "2000-01-01T12:00:00Z";
+export const EARTH_RADIUS_METERS = 6_371_008.4;
+

@@ -1,0 +1,85 @@
+{
+  "sources": [
+    {
+      "id": "jpl_horizons_api",
+      "name": "NASA/JPL Horizons API",
+      "tier": "S",
+      "url": "https://ssd-api.jpl.nasa.gov/doc/horizons.html",
+      "type": "ephemeris",
+      "used_for": ["state_vectors", "orbital_elements", "planet_positions", "moon_positions", "small_body_positions", "spacecraft_trajectory_future"],
+      "status": "planned_for_v3",
+      "notes": "Use EPHEM_TYPE=VECTORS or EPHEM_TYPE=ELEMENTS for authoritative ephemeris data."
+    },
+    {
+      "id": "jpl_planetary_physical_parameters",
+      "name": "JPL Planetary Physical Parameters",
+      "tier": "S",
+      "url": "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+      "type": "physical_parameters",
+      "used_for": ["mass", "mean_radius", "density", "GM", "gravity", "escape_velocity"],
+      "status": "planned_for_v1",
+      "notes": "Primary source for planetary physical values."
+    },
+    {
+      "id": "jpl_horizons_manual",
+      "name": "NASA/JPL Horizons Manual",
+      "tier": "S",
+      "url": "https://ssd.jpl.nasa.gov/horizons/manual.html",
+      "type": "documentation",
+      "used_for": ["state_vector_definition", "orbital_element_definition", "SPK_output_reference"],
+      "status": "planned_for_v3",
+      "notes": "Reference documentation for Horizons outputs."
+    },
+    {
+      "id": "iau_wgccre",
+      "name": "IAU WGCCRE",
+      "tier": "S",
+      "url": "https://www.iau.org/WG100/WG100/Home.aspx",
+      "type": "coordinate_system",
+      "used_for": ["rotation_axis", "prime_meridian", "cartographic_coordinate_system", "body_orientation"],
+      "status": "planned_for_v4",
+      "notes": "Use for correct body orientation and map alignment."
+    },
+    {
+      "id": "usgs_astrogeology_maps",
+      "name": "USGS Astrogeology Maps",
+      "tier": "S",
+      "url": "https://www.usgs.gov/centers/astrogeology-science-center/maps",
+      "type": "planetary_maps",
+      "used_for": ["planetary_surface_maps", "topography", "geologic_maps", "image_mosaics"],
+      "status": "planned_for_v4",
+      "notes": "Use only public and properly licensed materials."
+    },
+    {
+      "id": "openspace_reference",
+      "name": "OpenSpace",
+      "tier": "A",
+      "url": "https://github.com/OpenSpace/OpenSpace",
+      "type": "architecture_reference",
+      "used_for": ["scene_graph_reference", "dataset_layer_reference", "timeline_reference", "multi_scale_visualization_reference"],
+      "status": "reference_only",
+      "notes": "Use as architecture inspiration. Do not copy code without license review."
+    },
+    {
+      "id": "celestia_reference",
+      "name": "Celestia",
+      "tier": "A",
+      "url": "https://github.com/CelestiaProject/Celestia",
+      "type": "architecture_reference",
+      "used_for": ["space_navigation_reference", "catalog_reference", "time_control_reference"],
+      "status": "reference_only",
+      "notes": "Use as reference for space exploration UI and catalog design."
+    },
+    {
+      "id": "stellarium_reference",
+      "name": "Stellarium",
+      "tier": "A",
+      "url": "https://github.com/Stellarium/stellarium",
+      "type": "architecture_reference",
+      "used_for": ["observer_mode_reference", "sky_view_reference", "celestial_coordinate_reference"],
+      "status": "reference_only",
+      "notes": "Use for future observer-from-Earth mode."
+    }
+  ]
+}
+

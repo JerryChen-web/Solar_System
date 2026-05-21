@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solar_System Visual Config",
+  "type": "object",
+  "required": ["visual_units", "scaling", "orbits", "labels", "camera", "lighting"],
+  "properties": {
+    "visual_units": { "type": "object" },
+    "scaling": { "type": "object" },
+    "orbits": { "type": "object" },
+    "labels": { "type": "object" },
+    "camera": { "type": "object" },
+    "lighting": { "type": "object" }
+  }
+}
+

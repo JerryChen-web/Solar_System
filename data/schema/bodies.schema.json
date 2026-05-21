@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solar_System Bodies",
+  "type": "object",
+  "required": ["unit_system", "epoch", "bodies"],
+  "properties": {
+    "unit_system": { "const": "SI" },
+    "epoch": { "type": "string" },
+    "bodies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name_en", "name_zh", "type", "mass_kg", "mean_radius_m", "rotation_period_s", "visual"],
+        "properties": {
+          "id": { "type": "string" },
+          "name_en": { "type": "string" },
+          "name_zh": { "type": "string" },
+          "type": { "enum": ["star", "planet", "moon"] },
+          "parent": { "type": ["string", "null"] },
+          "mass_kg": { "type": "number" },
+          "mean_radius_m": { "type": "number" },
+          "rotation_period_s": { "type": "number" },
+          "visual": { "type": "object" }
+        }
+      }
+    }
+  }
+}
+

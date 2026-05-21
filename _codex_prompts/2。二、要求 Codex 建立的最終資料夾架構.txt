@@ -1,0 +1,130 @@
+Solar_System/
+│
+├─ README.md
+├─ AGENTS.md
+├─ PROJECT_SPEC.md
+├─ package.json
+├─ index.html
+├─ vite.config.ts
+├─ tsconfig.json
+├─ .gitignore
+│
+├─ public/
+│  ├─ textures/
+│  │  ├─ placeholder/
+│  │  ├─ sun/
+│  │  ├─ mercury/
+│  │  ├─ venus/
+│  │  ├─ earth/
+│  │  ├─ moon/
+│  │  ├─ mars/
+│  │  ├─ jupiter/
+│  │  ├─ saturn/
+│  │  ├─ uranus/
+│  │  └─ neptune/
+│  │
+│  └─ icons/
+│
+├─ data/
+│  ├─ raw/
+│  │  ├─ jpl_horizons/
+│  │  ├─ nasa_fact_sheets/
+│  │  ├─ jpl_physical_parameters/
+│  │  ├─ iau_wgccre/
+│  │  ├─ usgs_maps/
+│  │  ├─ openspace_reference/
+│  │  ├─ celestia_reference/
+│  │  └─ stellarium_reference/
+│  │
+│  ├─ processed/
+│  │  ├─ bodies.seed.json
+│  │  ├─ bodies.json
+│  │  ├─ orbital_elements_j2000.seed.json
+│  │  ├─ orbital_elements_j2000.json
+│  │  ├─ state_vectors_demo.json
+│  │  ├─ visual_config.json
+│  │  ├─ simulation_config.json
+│  │  └─ source_registry.json
+│  │
+│  └─ schema/
+│     ├─ bodies.schema.json
+│     ├─ orbital_elements.schema.json
+│     ├─ state_vectors.schema.json
+│     ├─ visual_config.schema.json
+│     └─ source_registry.schema.json
+│
+├─ src/
+│  ├─ main.ts
+│  ├─ app.ts
+│  │
+│  ├─ config/
+│  │  ├─ constants.ts
+│  │  ├─ simulationConfig.ts
+│  │  └─ visualScale.ts
+│  │
+│  ├─ physics/
+│  │  ├─ gravity.ts
+│  │  ├─ nbodyEngine.ts
+│  │  ├─ integrators.ts
+│  │  ├─ bodyState.ts
+│  │  └─ units.ts
+│  │
+│  ├─ astronomy/
+│  │  ├─ kepler.ts
+│  │  ├─ orbitalElements.ts
+│  │  ├─ stateVectors.ts
+│  │  ├─ time.ts
+│  │  ├─ coordinateTransform.ts
+│  │  └─ rotationModel.ts
+│  │
+│  ├─ rendering/
+│  │  ├─ scene.ts
+│  │  ├─ renderer.ts
+│  │  ├─ camera.ts
+│  │  ├─ lights.ts
+│  │  ├─ bodyMesh.ts
+│  │  ├─ orbitPath.ts
+│  │  ├─ rings.ts
+│  │  ├─ atmosphere.ts
+│  │  ├─ labels.ts
+│  │  └─ selection.ts
+│  │
+│  ├─ ui/
+│  │  ├─ controlPanel.ts
+│  │  ├─ bodyInfoPanel.ts
+│  │  ├─ timeline.ts
+│  │  └─ modeSwitcher.ts
+│  │
+│  ├─ data/
+│  │  ├─ dataLoader.ts
+│  │  └─ validators.ts
+│  │
+│  └─ types/
+│     ├─ body.ts
+│     ├─ orbit.ts
+│     ├─ vector.ts
+│     ├─ config.ts
+│     └─ source.ts
+│
+├─ tools/
+│  ├─ fetch_horizons_vectors.py
+│  ├─ fetch_horizons_elements.py
+│  ├─ convert_horizons_to_json.py
+│  ├─ validate_orbit_error.py
+│  ├─ generate_demo_data.py
+│  └─ README.md
+│
+├─ docs/
+│  ├─ data_sources.md
+│  ├─ physics_model.md
+│  ├─ visual_model.md
+│  ├─ nasa_jpl_pipeline.md
+│  ├─ version_plan.md
+│  ├─ license_notes.md
+│  ├─ validation_plan.md
+│  └─ openspace_like_architecture.md
+│
+└─ tests/
+   ├─ physics/
+   ├─ astronomy/
+   └─ data/

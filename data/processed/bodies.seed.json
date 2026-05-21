@@ -1,0 +1,160 @@
+{
+  "unit_system": "SI",
+  "epoch": "J2000",
+  "bodies": [
+    {
+      "id": "sun",
+      "name_en": "Sun",
+      "name_zh": "太陽",
+      "type": "star",
+      "parent": null,
+      "mass_kg": 1.9885e30,
+      "mean_radius_m": 696340000,
+      "rotation_period_s": 2160000,
+      "visual": {
+        "color": "#FDB813",
+        "radius_scale": 1,
+        "emissive": true,
+        "label": true
+      }
+    },
+    {
+      "id": "mercury",
+      "name_en": "Mercury",
+      "name_zh": "水星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 3.30103e23,
+      "mean_radius_m": 2439400,
+      "rotation_period_s": 5067032,
+      "visual": {
+        "color": "#9A9A9A",
+        "radius_scale": 400,
+        "label": true
+      }
+    },
+    {
+      "id": "venus",
+      "name_en": "Venus",
+      "name_zh": "金星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 4.86731e24,
+      "mean_radius_m": 6051800,
+      "rotation_period_s": -20996797,
+      "visual": {
+        "color": "#D8B26E",
+        "radius_scale": 250,
+        "label": true
+      }
+    },
+    {
+      "id": "earth",
+      "name_en": "Earth",
+      "name_zh": "地球",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 5.97217e24,
+      "mean_radius_m": 6371008.4,
+      "rotation_period_s": 86164.1,
+      "visual": {
+        "color": "#2E6CE6",
+        "radius_scale": 250,
+        "label": true,
+        "atmosphere": true
+      }
+    },
+    {
+      "id": "moon",
+      "name_en": "Moon",
+      "name_zh": "月球",
+      "type": "moon",
+      "parent": "earth",
+      "mass_kg": 7.342e22,
+      "mean_radius_m": 1737400,
+      "rotation_period_s": 2360584.7,
+      "visual": {
+        "color": "#C8C8C8",
+        "radius_scale": 350,
+        "label": true
+      }
+    },
+    {
+      "id": "mars",
+      "name_en": "Mars",
+      "name_zh": "火星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 6.41691e23,
+      "mean_radius_m": 3389500,
+      "rotation_period_s": 88642.7,
+      "visual": {
+        "color": "#C1440E",
+        "radius_scale": 300,
+        "label": true
+      }
+    },
+    {
+      "id": "jupiter",
+      "name_en": "Jupiter",
+      "name_zh": "木星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 1.898125e27,
+      "mean_radius_m": 69911000,
+      "rotation_period_s": 35730,
+      "visual": {
+        "color": "#D8CA9D",
+        "radius_scale": 45,
+        "label": true
+      }
+    },
+    {
+      "id": "saturn",
+      "name_en": "Saturn",
+      "name_zh": "土星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 5.68317e26,
+      "mean_radius_m": 58232000,
+      "rotation_period_s": 38362,
+      "visual": {
+        "color": "#E3D19F",
+        "radius_scale": 50,
+        "label": true,
+        "rings": true
+      }
+    },
+    {
+      "id": "uranus",
+      "name_en": "Uranus",
+      "name_zh": "天王星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 8.68099e25,
+      "mean_radius_m": 25362000,
+      "rotation_period_s": -62064,
+      "visual": {
+        "color": "#7FDBFF",
+        "radius_scale": 90,
+        "label": true
+      }
+    },
+    {
+      "id": "neptune",
+      "name_en": "Neptune",
+      "name_zh": "海王星",
+      "type": "planet",
+      "parent": "sun",
+      "mass_kg": 1.024092e26,
+      "mean_radius_m": 24622000,
+      "rotation_period_s": 57996,
+      "visual": {
+        "color": "#2B65EC",
+        "radius_scale": 90,
+        "label": true
+      }
+    }
+  ]
+}
+

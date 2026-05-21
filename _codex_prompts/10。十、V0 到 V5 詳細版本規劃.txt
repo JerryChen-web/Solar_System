@@ -1,0 +1,111 @@
+# Version Plan
+
+## V0 - Static Solar System Display
+Goal:
+Build the first visible 3D model.
+
+Features:
+- Sun + 8 planets + Moon
+- placeholder colors
+- orbit circles/ellipses
+- labels
+- camera controls
+- basic information panel
+
+Acceptance:
+- npm run dev works
+- scene renders correctly
+- no NASA API dependency
+
+## V1 - Kepler Orbit Model
+Goal:
+Make planets move using orbital elements.
+
+Features:
+- J2000 orbital elements
+- Kepler equation solver
+- elliptical orbit rendering
+- time speed control
+- current simulation date
+- pause/play/reset
+
+Acceptance:
+- all planets orbit the Sun
+- Moon orbits Earth in simplified mode
+- time multiplier works
+
+## V2 - N-body Physics Model
+Goal:
+Add real physics simulation architecture.
+
+Features:
+- body state vectors
+- gravitational acceleration
+- Velocity Verlet or Leapfrog
+- mode switch: Kepler / N-body
+- energy check placeholder
+- SI unit calculation
+
+Acceptance:
+- N-body engine can step simulation
+- Kepler mode remains stable
+- visual scale is separated from physical scale
+
+## V3 - NASA/JPL Data Pipeline
+Goal:
+Integrate authoritative data.
+
+Features:
+- fetch_horizons_vectors.py
+- fetch_horizons_elements.py
+- raw data archive
+- processed JSON output
+- source registry
+- validation against JPL Horizons
+
+Acceptance:
+- user can fetch state vectors for Sun + planets + Moon
+- processed state_vectors.json can be used by N-body mode
+- validation report generated
+
+## V4 - Visual Precision Layer
+Goal:
+Improve visual realism.
+
+Features:
+- texture loader
+- Earth cloud layer
+- Saturn ring mesh
+- atmosphere shell
+- sunlight/shadow
+- high-quality labels
+- body selection
+- camera follow
+
+Acceptance:
+- no large default downloads
+- app remains performant
+- textures are optional
+
+## V5 - OpenSpace-like Dataset-driven System
+Goal:
+Build a scalable scientific visualization platform.
+
+Features:
+- dataset layer manager
+- mission trajectory layer
+- spacecraft objects
+- asteroid catalog
+- comet catalog
+- timeline manager
+- observer mode
+- SPICE/Horizons adapter
+- multi-scale navigation
+- data provenance panel
+- validation dashboard
+
+Acceptance:
+- layers can be enabled/disabled
+- mission paths can be loaded
+- small bodies can be loaded from processed data
+- scientific source metadata is visible

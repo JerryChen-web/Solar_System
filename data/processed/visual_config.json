@@ -1,0 +1,43 @@
+{
+  "visual_units": {
+    "base": "threejs_scene_units",
+    "note": "Visual units are not physical meters."
+  },
+  "scaling": {
+    "distance": {
+      "inner_planet_scale": 18,
+      "outer_planet_scale": 4,
+      "moon_distance_scale": 120,
+      "mode": "custom_au_to_scene_units"
+    },
+    "radius": {
+      "mode": "per_body_visual_scale",
+      "min_visible_radius": 0.08,
+      "max_visible_radius": 4
+    }
+  },
+  "orbits": {
+    "line_segments": 512,
+    "line_opacity": 0.55,
+    "show_inclination": true
+  },
+  "labels": {
+    "enabled": true,
+    "font_size": 12,
+    "show_zh_name": true,
+    "show_en_name": false
+  },
+  "camera": {
+    "enable_orbit_controls": true,
+    "near": 0.01,
+    "far": 100000,
+    "default_position": [0, 80, 160],
+    "follow_enabled": true
+  },
+  "lighting": {
+    "sun_as_point_light": true,
+    "ambient_light_intensity": 0.08,
+    "sun_light_intensity": 3
+  }
+}
+
