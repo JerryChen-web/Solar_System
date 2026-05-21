@@ -1,20 +1,76 @@
 # Version Plan
 
-## V0 - Static Solar System Display
-Display Sun + 8 planets + Moon with placeholder colors, orbit rings, labels, camera controls, and a basic information panel.
+## V0.1 - Completed MVP
 
-## V1 - Kepler Orbit Model
-Animate planets using J2000 orbital elements, a Kepler solver, time speed control, simulation date, pause/play, and reset.
+Completed:
 
-## V2 - N-body Physics Model
-Add body state vectors, gravitational acceleration, Velocity Verlet or Leapfrog integration, and a Kepler/N-body mode switch.
+- Basic Vite + TypeScript + Three.js MVP.
+- Sun + 8 planets + Moon.
+- Kepler mode from local demo orbital elements.
+- Orbit lines.
+- Labels.
+- Basic UI and body selection.
+- Physical data separated from visual scale.
+
+## V0.2 - Visual And Interaction Improvements
+
+Current target:
+
+- Follow camera.
+- Selected body highlight.
+- Time scale presets.
+- Enhanced body info panel.
+- Visual / physics debug panel.
+- Basic Vitest tests.
+
+## V1 - Kepler Model Precision Improvement
+
+Next phase:
+
+- Better orbital validation.
+- More accurate Moon model.
+- Optional date input.
+- More precise simulation date controls.
+- Kepler output comparison against reference data.
+
+## V2 - N-body Demo Activation
+
+Future phase:
+
+- N-body demo activation.
+- State vector propagation.
+- Energy check.
+- Kepler / N-body comparison tools.
 
 ## V3 - NASA/JPL Data Pipeline
-Fetch Horizons vectors/elements, archive raw data, emit processed JSON, and validate against authoritative ephemerides.
+
+Future phase:
+
+- NASA/JPL Horizons data pipeline.
+- Raw source archive.
+- Processed state vector output.
+- Source registry updates.
+- Validation reports.
 
 ## V4 - Visual Precision Layer
-Add optional textures, Earth cloud layer, Saturn ring improvements, atmosphere placeholders, sunlight/shadow improvements, and camera follow.
+
+Future phase:
+
+- Optional texture loader.
+- Improved rings and atmosphere placeholders.
+- Better sunlight and shadow behavior.
+- Camera follow refinements.
 
 ## V5 - OpenSpace-like Dataset System
-Add layer management, trajectories, spacecraft, small bodies, timeline management, observer mode, multi-scale navigation, and source metadata panels.
+
+Future phase:
+
+- Dataset layer manager.
+- Mission trajectories.
+- Small body catalogs.
+- Spacecraft objects.
+- Timeline manager.
+- Observer mode.
+- Multi-scale navigation.
+- Data provenance panel.
 

@@ -1,6 +1,6 @@
 {
   "project_name": "Solar_System",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "unit_system": "SI",
   "default_mode": "kepler",
   "available_modes": ["kepler", "nbody_placeholder"],
@@ -33,4 +33,3 @@
     "camera_default_target": "sun"
   }
 }
-
