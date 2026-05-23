@@ -1,0 +1,124 @@
+{
+  "fixtureVersion": "0.6.0",
+  "sourceLabel": "Local J2000 demo fixture",
+  "sourceType": "local-demo-generated",
+  "accuracyNote": "Generated from the bundled local Kepler/Moon demo model. Not NASA/JPL Horizons or SPICE precision data.",
+  "fixtureTimestamp": "2026-05-23T00:00:00Z",
+  "simulationDate": "2000-01-01T12:00:00Z",
+  "julianDate": 2451545,
+  "coordinateSystemNote": "Heliocentric app physical coordinates in the current local J2000 demo frame.",
+  "unitNote": "All coordinates and distances are meters.",
+  "bodyReferences": [
+    {
+      "bodyId": "sun",
+      "bodyName": "Sun",
+      "expectedX": 0,
+      "expectedY": 0,
+      "expectedZ": 0,
+      "expectedDistanceFromSun": 0,
+      "unit": "m",
+      "toleranceMeters": 1000,
+      "note": "Sun local reference body at origin."
+    },
+    {
+      "bodyId": "mercury",
+      "bodyName": "Mercury",
+      "expectedX": -19460980613.9906,
+      "expectedY": -3679931051.06441,
+      "expectedZ": -66913981136.1006,
+      "expectedDistanceFromSun": 69783612191.4102,
+      "unit": "m",
+      "toleranceMeters": 50000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "venus",
+      "bodyName": "Venus",
+      "expectedX": -107458597292.439,
+      "expectedY": 6135850067.936,
+      "expectedZ": -4892846938.46911,
+      "expectedDistanceFromSun": 107744785206.887,
+      "unit": "m",
+      "toleranceMeters": 50000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "earth",
+      "bodyName": "Earth",
+      "expectedX": -26504441615.3111,
+      "expectedY": -38663.464067646,
+      "expectedZ": 144693227461.253,
+      "expectedDistanceFromSun": 147100698497.644,
+      "unit": "m",
+      "toleranceMeters": 50000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "moon",
+      "bodyName": "Moon",
+      "expectedX": -26797672266.6144,
+      "expectedY": 35514515.1748998,
+      "expectedZ": 144423709367.43,
+      "expectedDistanceFromSun": 146888816210.212,
+      "expectedMoonEarthDistance": 399860283.440409,
+      "unit": "m",
+      "toleranceMeters": 1000000000,
+      "note": "Local demo J2000 heliocentric Moon position plus Moon-Earth distance."
+    },
+    {
+      "bodyId": "mars",
+      "bodyName": "Mars",
+      "expectedX": 208040933903.797,
+      "expectedY": -5155331001.44728,
+      "expectedZ": -2003274684.49338,
+      "expectedDistanceFromSun": 208114441418.081,
+      "unit": "m",
+      "toleranceMeters": 50000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "jupiter",
+      "bodyName": "Jupiter",
+      "expectedX": 598140298966.931,
+      "expectedY": -15216768478.7888,
+      "expectedZ": 440672079993.606,
+      "expectedDistanceFromSun": 743098411636.761,
+      "unit": "m",
+      "toleranceMeters": 200000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "saturn",
+      "bodyName": "Saturn",
+      "expectedX": 959638100292.751,
+      "expectedY": -55223571194.788,
+      "expectedZ": 979217915059.77,
+      "expectedDistanceFromSun": 1372159849114.89,
+      "unit": "m",
+      "toleranceMeters": 200000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "uranus",
+      "bodyName": "Uranus",
+      "expectedX": 2158018979878.92,
+      "expectedY": -35609247964.2649,
+      "expectedZ": -2055122548998.29,
+      "expectedDistanceFromSun": 2980242041757.59,
+      "unit": "m",
+      "toleranceMeters": 200000000000,
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "neptune",
+      "bodyName": "Neptune",
+      "expectedX": 2513956734281.61,
+      "expectedY": 19059248949.3051,
+      "expectedZ": -3738856178114.77,
+      "expectedDistanceFromSun": 4505484129085.05,
+      "unit": "m",
+      "toleranceMeters": 200000000000,
+      "note": "Local demo J2000 reference position."
+    }
+  ]
+}

@@ -238,6 +238,7 @@ button:disabled {
 .debug-panel summary,
 .validation-dashboard summary,
 .validation-report-panel summary,
+.precision-report-panel summary,
 .position-table-panel summary {
   cursor: pointer;
   list-style-position: inside;
@@ -258,6 +259,7 @@ button:disabled {
 
 .validation-dashboard,
 .validation-report-panel,
+.precision-report-panel,
 .position-table-panel {
   padding: 0;
 }
@@ -274,20 +276,30 @@ button:disabled {
   padding: 0 14px 14px;
 }
 
+.precision-report-content {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
 .validation-report-summary,
-.validation-report-status {
+.validation-report-status,
+.precision-report-summary,
+.precision-report-status {
   color: #93a4c1;
   font-size: 12px;
   line-height: 1.35;
 }
 
-.validation-report-actions {
+.validation-report-actions,
+.precision-report-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
-.validation-report-actions button {
+.validation-report-actions button,
+.precision-report-actions button {
   border: 1px solid rgba(171, 190, 224, 0.32);
   border-radius: 6px;
   color: #f5f8ff;
@@ -296,7 +308,8 @@ button:disabled {
   cursor: pointer;
 }
 
-.validation-report-actions button:hover {
+.validation-report-actions button:hover,
+.precision-report-actions button:hover {
   background: #223753;
 }
 

@@ -2,7 +2,7 @@
 
 Solar_System is a Vite + TypeScript + Three.js Solar System visualization MVP. It uses local demo data, a Kepler orbit model, and a modular rendering/UI structure that can grow toward higher-precision astronomy data pipelines later.
 
-V0.5 adds a reference adapter layer and validation report export on top of V0.4. It still uses local approximate sanity-check references only; it does not call NASA APIs, download textures, use SPICE, or include large datasets.
+V0.6 adds local reference fixture comparison and precision report export on top of V0.5. It still uses local approximate/demo references only; it does not call NASA APIs, download textures, use SPICE, or include large datasets.
 
 ## Requirements
 
@@ -24,7 +24,17 @@ npm.cmd audit --audit-level=moderate
 
 Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 
-## V0.5 Features
+## V0.6 Features
+
+- Local reference fixture format under `data/reference`.
+- Sample J2000 demo fixture generated from the current local Kepler/Moon model.
+- Fixture parser with safe handling for missing metadata, malformed rows, unit mismatches, unknown bodies, and invalid values.
+- Fixture comparison metrics: dx/dy/dz, 3D position delta, radial distance delta, percentage error, Moon-Earth distance delta, and PASS/WARN/ERROR status.
+- Precision Report panel with fixture/source summary and JSON/CSV export controls.
+- Structured precision reports with fixture metadata, totals, aggregate deltas, and per-body comparison rows.
+- Vitest coverage for fixture parsing, comparison, report serialization, and panel helpers.
+
+## V0.5 Features Preserved
 
 - Reference adapter interface for future higher-precision providers without rewriting the UI.
 - Local approximate reference provider using the existing V0.4 distance sanity ranges.
@@ -70,12 +80,13 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 - Invalid date input shows a message and leaves the simulation date unchanged.
 - Use `Pause` / `Play` to stop or resume simulation time without changing the selected time scale.
 - Use `Reset` to return the simulation date to the configured J2000 epoch.
-- Open the `Debug`, `Validation Dashboard`, `Validation Report`, and `Position Table` sections in the right panel to inspect and export validation state.
+- Open the `Debug`, `Validation Dashboard`, `Validation Report`, `Precision Report`, and `Position Table` sections in the right panel to inspect and export validation state.
 
 ## Current Accuracy Limits
 
-- V0.5 reference comparison is local approximate validation, not NASA/JPL Horizons precision comparison.
+- V0.6 precision comparison is local fixture-based comparison, not NASA/JPL Horizons precision comparison.
 - The reference adapter is a preparation layer for future higher-precision sources, not a precision data source by itself.
+- The sample precision fixture is local demo data generated from the current model, not an external scientific reference.
 - Planet distance ranges are based on local orbital elements and sanity tolerances.
 - The Moon-Earth distance check uses a local approximate range, not a high-precision lunar ephemeris.
 - Planet positions are suitable for visualization and structural validation, not high-precision scientific measurement.
@@ -92,6 +103,7 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 ## Data Layout
 
 - `data/processed`: app-ready demo JSON.
+- `data/reference`: local fixture comparison samples and format notes.
 - `data/raw`: reserved for future source archives.
 - `data/schema`: JSON schemas for processed data.
 - `docs`: design notes and version plan.

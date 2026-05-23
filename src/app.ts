@@ -8,6 +8,14 @@ import { formatSimulationDate } from "./astronomy/time";
 import { computeKeplerPositionMeters } from "./astronomy/kepler";
 import { localReferenceProvider } from "./astronomy/localReferenceProvider";
 import { computeMoonPositionMeters } from "./astronomy/moonModel";
+import {
+  compareFixtureToPositions,
+  type FixtureComparisonSummary
+} from "./astronomy/fixtureComparison";
+import {
+  parseReferenceFixture,
+  type ReferenceFixture
+} from "./astronomy/referenceFixture";
 import { rotationRadiansForElapsedSeconds } from "./astronomy/rotationModel";
 import {
   buildValidationSummary,
@@ -36,8 +44,10 @@ import { DebugPanel } from "./ui/debugPanel";
 import { formatTimeScale } from "./ui/formatters";
 import type { SimulationMode } from "./ui/modeSwitcher";
 import { PositionTable } from "./ui/positionTable";
+import { PrecisionReportPanel } from "./ui/precisionReportPanel";
 import { ValidationDashboard } from "./ui/validationDashboard";
 import { ValidationReportPanel } from "./ui/validationReportPanel";
+import sampleReferenceFixtureJson from "../data/reference/sample_fixture_v0_6.json";
 
 interface BodyNode {
   body: BodyRecord;
@@ -62,8 +72,10 @@ export class SolarSystemApp {
   private readonly debugPanel: DebugPanel;
   private readonly validationDashboard: ValidationDashboard;
   private readonly validationReportPanel: ValidationReportPanel;
+  private readonly precisionReportPanel: PrecisionReportPanel;
   private readonly positionTable: PositionTable;
   private readonly referenceProvider = localReferenceProvider;
+  private readonly referenceFixture: ReferenceFixture;
   private readonly clock = new THREE.Clock();
   private readonly bodyNodes = new Map<string, BodyNode>();
   private readonly scenePositions = new Map<string, THREE.Vector3>();
@@ -80,6 +92,7 @@ export class SolarSystemApp {
   private orbitCount = 0;
   private validationContinuityHistory: ContinuityHistory | null = null;
   private latestValidationSummary: ValidationSummary | null = null;
+  private latestFixtureComparison: FixtureComparisonSummary | null = null;
 
   constructor(private readonly root: HTMLElement) {
     this.root.innerHTML = "";
@@ -95,6 +108,9 @@ export class SolarSystemApp {
     this.root.appendChild(shell);
 
     this.data = loadSolarSystemData();
+    this.referenceFixture = parseReferenceFixture(sampleReferenceFixtureJson, {
+      knownBodyIds: this.data.bodyById.keys()
+    });
     this.scene = createScene();
     this.camera = createCamera(this.data.visualConfig, this.viewport);
     this.renderer = createRenderer(this.viewport);
@@ -141,6 +157,12 @@ export class SolarSystemApp {
       julianDate: secondsSinceJ2000ToJulianDate(this.secondsSinceEpoch),
       summary: this.latestValidationSummary,
       referenceProvider: this.referenceProvider.metadata
+    }));
+    this.precisionReportPanel = new PrecisionReportPanel(this.sidePanel, () => ({
+      appVersion: this.data.simulationConfig.version,
+      simulationDate: formatSimulationDate(this.secondsSinceEpoch),
+      julianDate: secondsSinceJ2000ToJulianDate(this.secondsSinceEpoch),
+      comparison: this.latestFixtureComparison
     }));
     this.positionTable = new PositionTable(this.sidePanel);
 
@@ -425,8 +447,13 @@ export class SolarSystemApp {
     });
 
     this.latestValidationSummary = summary;
+    this.latestFixtureComparison = compareFixtureToPositions({
+      fixture: this.referenceFixture,
+      positionsMeters: this.physicalPositionsMeters
+    });
     this.validationDashboard.update(summary);
     this.validationReportPanel.update(summary);
+    this.precisionReportPanel.update(this.latestFixtureComparison);
     this.positionTable.update(summary.positionRows);
     this.validationContinuityHistory = {
       positionsMeters: clonePositions(this.physicalPositionsMeters),

@@ -1,6 +1,6 @@
 {
   "project_name": "Solar_System",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "unit_system": "SI",
   "default_mode": "kepler",
   "available_modes": ["kepler", "nbody_placeholder"],
