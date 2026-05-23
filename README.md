@@ -2,7 +2,7 @@
 
 Solar_System is a Vite + TypeScript + Three.js Solar System visualization MVP. It uses local demo data, a Kepler orbit model, and a modular rendering/UI structure that can grow toward higher-precision astronomy data pipelines later.
 
-V0.6 adds local reference fixture comparison and precision report export on top of V0.5. It still uses local approximate/demo references only; it does not call NASA APIs, download textures, use SPICE, or include large datasets.
+V0.7 adds a local reference data contract and import pipeline on top of V0.6. It can validate and normalize local demo, manually curated, future Horizons-export, or future SPICE-derived JSON files into the existing fixture comparison format, but it still does not call NASA APIs, download textures, use SPICE, or include large datasets.
 
 ## Requirements
 
@@ -24,7 +24,18 @@ npm.cmd audit --audit-level=moderate
 
 Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 
-## V0.6 Features
+## V0.7 Features
+
+- Formal local reference import contract for future real reference datasets.
+- Import validation for dataset/source metadata, coordinate system, source type, body rows, units, tolerances, and invalid numeric values.
+- Dependency-free unit normalization for AU, km, and m.
+- Conversion from accepted import rows into the V0.6 fixture comparison format.
+- Structured import reports with dataset/source metadata, accepted rows, warnings, errors, row diagnostics, and converted fixture status.
+- Compact Reference Import panel showing sample dataset status and confirming no live external connection.
+- Sample local import dataset under `data/reference/sample_import_v0_7.json`.
+- Contract documentation under `data/reference/import_contract_v0_7.md`.
+
+## V0.6 Features Preserved
 
 - Local reference fixture format under `data/reference`.
 - Sample J2000 demo fixture generated from the current local Kepler/Moon model.
@@ -80,13 +91,14 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 - Invalid date input shows a message and leaves the simulation date unchanged.
 - Use `Pause` / `Play` to stop or resume simulation time without changing the selected time scale.
 - Use `Reset` to return the simulation date to the configured J2000 epoch.
-- Open the `Debug`, `Validation Dashboard`, `Validation Report`, `Precision Report`, and `Position Table` sections in the right panel to inspect and export validation state.
+- Open the `Debug`, `Validation Dashboard`, `Validation Report`, `Precision Report`, `Reference Import`, and `Position Table` sections in the right panel to inspect validation state, import status, and export reports.
 
 ## Current Accuracy Limits
 
-- V0.6 precision comparison is local fixture-based comparison, not NASA/JPL Horizons precision comparison.
+- V0.7 import is local contract validation and fixture conversion only; it is not live NASA/JPL Horizons or SPICE validation.
+- V0.6 precision comparison remains local fixture-based comparison, not NASA/JPL Horizons precision comparison.
 - The reference adapter is a preparation layer for future higher-precision sources, not a precision data source by itself.
-- The sample precision fixture is local demo data generated from the current model, not an external scientific reference.
+- The sample import dataset and sample precision fixture are local demo data generated from the current model, not external scientific references.
 - Planet distance ranges are based on local orbital elements and sanity tolerances.
 - The Moon-Earth distance check uses a local approximate range, not a high-precision lunar ephemeris.
 - Planet positions are suitable for visualization and structural validation, not high-precision scientific measurement.
@@ -95,6 +107,7 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 ## Current Technical Limits
 
 - NASA/JPL Horizons is not connected yet.
+- The import pipeline does not fetch external data; it only processes bundled or future local JSON files.
 - Full N-body propagation is not active yet.
 - Large textures are not used.
 - The app still uses local demo data and Kepler mode as the primary simulation path.
@@ -103,7 +116,7 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 ## Data Layout
 
 - `data/processed`: app-ready demo JSON.
-- `data/reference`: local fixture comparison samples and format notes.
+- `data/reference`: local fixture samples, V0.7 import sample, and format/contract notes.
 - `data/raw`: reserved for future source archives.
 - `data/schema`: JSON schemas for processed data.
 - `docs`: design notes and version plan.

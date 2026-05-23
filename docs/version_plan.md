@@ -72,7 +72,7 @@ Known limits:
 
 ## V0.6 - Reference Fixture Comparison And Precision Report
 
-Current phase:
+Completed:
 
 - Local reference fixture format and sample fixture.
 - Fixture parser with safe handling for missing metadata, malformed rows, unit mismatches, and invalid values.
@@ -87,11 +87,29 @@ Known limits:
 - The sample fixture is generated from the current local demo model and is not an external authority.
 - Future V1 can replace fixture contents with real reference data while keeping the UI and report export layer stable.
 
+## V0.7 - Real Reference Data Contract And Import Pipeline
+
+Current phase:
+
+- Local reference data contract for future real reference datasets.
+- Source metadata, coordinate system, source type, unit, tolerance, and body row validation.
+- Dependency-free AU, km, and m normalization helpers.
+- Local import pipeline that converts accepted rows into the V0.6 fixture format.
+- Import diagnostics and Reference Import panel.
+- Sample local import dataset and import contract documentation.
+
+Known limits:
+
+- V0.7 is local-only and does not fetch live NASA/JPL Horizons data.
+- V0.7 does not add SPICE kernels, SPICE parsing, or large external datasets.
+- Converted sample data is still demo data from the bundled local model, not an external precision authority.
+- Future V1 can feed real exported reference files through the contract while preserving the Precision Report UI and export layer.
+
 ## V1 - Kepler Model Precision Improvement
 
 Next phase:
 
-- Better orbital validation against future external reference data.
+- Better orbital validation against real local reference imports prepared through the V0.7 contract.
 - More accurate Moon model.
 - Optional richer date/time input.
 - More precise simulation date controls.

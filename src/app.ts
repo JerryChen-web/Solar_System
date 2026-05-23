@@ -16,6 +16,14 @@ import {
   parseReferenceFixture,
   type ReferenceFixture
 } from "./astronomy/referenceFixture";
+import {
+  importReferenceData,
+  type ReferenceImportPipelineResult
+} from "./astronomy/referenceImportPipeline";
+import {
+  buildReferenceImportReport,
+  type ReferenceImportReport
+} from "./astronomy/referenceImportReport";
 import { rotationRadiansForElapsedSeconds } from "./astronomy/rotationModel";
 import {
   buildValidationSummary,
@@ -45,9 +53,11 @@ import { formatTimeScale } from "./ui/formatters";
 import type { SimulationMode } from "./ui/modeSwitcher";
 import { PositionTable } from "./ui/positionTable";
 import { PrecisionReportPanel } from "./ui/precisionReportPanel";
+import { ReferenceImportPanel } from "./ui/referenceImportPanel";
 import { ValidationDashboard } from "./ui/validationDashboard";
 import { ValidationReportPanel } from "./ui/validationReportPanel";
 import sampleReferenceFixtureJson from "../data/reference/sample_fixture_v0_6.json";
+import sampleReferenceImportJson from "../data/reference/sample_import_v0_7.json";
 
 interface BodyNode {
   body: BodyRecord;
@@ -73,9 +83,12 @@ export class SolarSystemApp {
   private readonly validationDashboard: ValidationDashboard;
   private readonly validationReportPanel: ValidationReportPanel;
   private readonly precisionReportPanel: PrecisionReportPanel;
+  private readonly referenceImportPanel: ReferenceImportPanel;
   private readonly positionTable: PositionTable;
   private readonly referenceProvider = localReferenceProvider;
   private readonly referenceFixture: ReferenceFixture;
+  private readonly referenceImportResult: ReferenceImportPipelineResult;
+  private readonly referenceImportReport: ReferenceImportReport;
   private readonly clock = new THREE.Clock();
   private readonly bodyNodes = new Map<string, BodyNode>();
   private readonly scenePositions = new Map<string, THREE.Vector3>();
@@ -108,9 +121,19 @@ export class SolarSystemApp {
     this.root.appendChild(shell);
 
     this.data = loadSolarSystemData();
-    this.referenceFixture = parseReferenceFixture(sampleReferenceFixtureJson, {
+    this.referenceImportResult = importReferenceData(sampleReferenceImportJson, {
+      knownBodyIds: this.data.bodyById.keys(),
+      knownBodyNames: this.data.bodies.map((body) => body.name_en),
+      fixtureVersion: "0.7.0"
+    });
+    this.referenceImportReport = buildReferenceImportReport(this.referenceImportResult);
+    const fallbackReferenceFixture = parseReferenceFixture(sampleReferenceFixtureJson, {
       knownBodyIds: this.data.bodyById.keys()
     });
+    this.referenceFixture =
+      this.referenceImportResult.convertedFixture && this.referenceImportResult.convertedFixture.status !== "ERROR"
+        ? this.referenceImportResult.convertedFixture
+        : fallbackReferenceFixture;
     this.scene = createScene();
     this.camera = createCamera(this.data.visualConfig, this.viewport);
     this.renderer = createRenderer(this.viewport);
@@ -164,6 +187,8 @@ export class SolarSystemApp {
       julianDate: secondsSinceJ2000ToJulianDate(this.secondsSinceEpoch),
       comparison: this.latestFixtureComparison
     }));
+    this.referenceImportPanel = new ReferenceImportPanel(this.sidePanel);
+    this.referenceImportPanel.update(this.referenceImportReport);
     this.positionTable = new PositionTable(this.sidePanel);
 
     this.mode = this.data.simulationConfig.default_mode;

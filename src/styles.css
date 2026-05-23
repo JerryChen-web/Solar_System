@@ -239,6 +239,7 @@ button:disabled {
 .validation-dashboard summary,
 .validation-report-panel summary,
 .precision-report-panel summary,
+.reference-import-panel summary,
 .position-table-panel summary {
   cursor: pointer;
   list-style-position: inside;
@@ -260,6 +261,7 @@ button:disabled {
 .validation-dashboard,
 .validation-report-panel,
 .precision-report-panel,
+.reference-import-panel,
 .position-table-panel {
   padding: 0;
 }
@@ -282,10 +284,18 @@ button:disabled {
   padding: 0 14px 14px;
 }
 
+.reference-import-content {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
 .validation-report-summary,
 .validation-report-status,
 .precision-report-summary,
-.precision-report-status {
+.precision-report-status,
+.reference-import-summary,
+.reference-import-status {
   color: #93a4c1;
   font-size: 12px;
   line-height: 1.35;

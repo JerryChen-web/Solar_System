@@ -1,0 +1,168 @@
+{
+  "contractVersion": "0.7.0",
+  "datasetId": "local-j2000-demo-import-v0-7",
+  "sourceName": "Local J2000 demo import sample",
+  "sourceType": "local-demo",
+  "sourceNote": "Generated from the bundled local Kepler/Moon demo model. No live external service is used.",
+  "generatedTimestamp": "2026-05-23T00:00:00Z",
+  "importedTimestamp": "2026-05-23T00:00:00Z",
+  "accuracyNote": "Local demo import sample only. Not NASA/JPL Horizons or SPICE precision data.",
+  "licenseNote": "Project-local demo data for import pipeline testing.",
+  "coordinateSystem": "heliocentric-app-j2000",
+  "origin": "sun",
+  "referenceFrame": "J2000",
+  "unitSystem": "SI",
+  "timeScale": "UTC",
+  "simulationDate": "2000-01-01T12:00:00Z",
+  "julianDate": 2451545,
+  "validationMetadata": {
+    "expectedCoordinateUnit": "m",
+    "expectedDistanceUnit": "m",
+    "expectedTimeFormat": "ISO-8601 UTC",
+    "allowedBodyNames": [
+      "Sun",
+      "Mercury",
+      "Venus",
+      "Earth",
+      "Moon",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune"
+    ],
+    "allowedCoordinateSystems": [
+      "heliocentric-app-j2000",
+      "heliocentric-ecliptic-j2000"
+    ],
+    "allowedSourceTypes": [
+      "local-demo",
+      "manual-curated",
+      "horizons-export",
+      "spice-derived"
+    ]
+  },
+  "bodyRows": [
+    {
+      "bodyId": "sun",
+      "bodyName": "Sun",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "distanceFromSun": 0,
+      "unit": "m",
+      "tolerance": 1000,
+      "confidence": "demo",
+      "note": "Sun local reference body at origin."
+    },
+    {
+      "bodyId": "mercury",
+      "bodyName": "Mercury",
+      "x": -19460980613.9906,
+      "y": -3679931051.06441,
+      "z": -66913981136.1006,
+      "distanceFromSun": 69783612191.4102,
+      "unit": "m",
+      "tolerance": 50000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "venus",
+      "bodyName": "Venus",
+      "x": -107458597292.439,
+      "y": 6135850067.936,
+      "z": -4892846938.46911,
+      "distanceFromSun": 107744785206.887,
+      "unit": "m",
+      "tolerance": 50000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "earth",
+      "bodyName": "Earth",
+      "x": -26504441615.3111,
+      "y": -38663.464067646,
+      "z": 144693227461.253,
+      "distanceFromSun": 147100698497.644,
+      "unit": "m",
+      "tolerance": 50000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "moon",
+      "bodyName": "Moon",
+      "x": -26797672266.6144,
+      "y": 35514515.1748998,
+      "z": 144423709367.43,
+      "distanceFromSun": 146888816210.212,
+      "moonEarthDistance": 399860283.440409,
+      "unit": "m",
+      "tolerance": 1000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 heliocentric Moon position plus Moon-Earth distance."
+    },
+    {
+      "bodyId": "mars",
+      "bodyName": "Mars",
+      "x": 208040933903.797,
+      "y": -5155331001.44728,
+      "z": -2003274684.49338,
+      "distanceFromSun": 208114441418.081,
+      "unit": "m",
+      "tolerance": 50000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "jupiter",
+      "bodyName": "Jupiter",
+      "x": 598140298966.931,
+      "y": -15216768478.7888,
+      "z": 440672079993.606,
+      "distanceFromSun": 743098411636.761,
+      "unit": "m",
+      "tolerance": 200000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "saturn",
+      "bodyName": "Saturn",
+      "x": 959638100292.751,
+      "y": -55223571194.788,
+      "z": 979217915059.77,
+      "distanceFromSun": 1372159849114.89,
+      "unit": "m",
+      "tolerance": 200000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "uranus",
+      "bodyName": "Uranus",
+      "x": 2158018979878.92,
+      "y": -35609247964.2649,
+      "z": -2055122548998.29,
+      "distanceFromSun": 2980242041757.59,
+      "unit": "m",
+      "tolerance": 200000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    },
+    {
+      "bodyId": "neptune",
+      "bodyName": "Neptune",
+      "x": 2513956734281.61,
+      "y": 19059248949.3051,
+      "z": -3738856178114.77,
+      "distanceFromSun": 4505484129085.05,
+      "unit": "m",
+      "tolerance": 200000000000,
+      "confidence": "demo",
+      "note": "Local demo J2000 reference position."
+    }
+  ]
+}
