@@ -237,6 +237,7 @@ button:disabled {
 
 .debug-panel summary,
 .validation-dashboard summary,
+.validation-report-panel summary,
 .position-table-panel summary {
   cursor: pointer;
   list-style-position: inside;
@@ -256,6 +257,7 @@ button:disabled {
 }
 
 .validation-dashboard,
+.validation-report-panel,
 .position-table-panel {
   padding: 0;
 }
@@ -264,6 +266,38 @@ button:disabled {
   display: grid;
   gap: 10px;
   padding: 0 14px 14px;
+}
+
+.validation-report-content {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.validation-report-summary,
+.validation-report-status {
+  color: #93a4c1;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.validation-report-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.validation-report-actions button {
+  border: 1px solid rgba(171, 190, 224, 0.32);
+  border-radius: 6px;
+  color: #f5f8ff;
+  background: #1a2942;
+  padding: 8px 9px;
+  cursor: pointer;
+}
+
+.validation-report-actions button:hover {
+  background: #223753;
 }
 
 .validation-totals {

@@ -2,14 +2,21 @@ import * as THREE from "three";
 import { AU_METERS, GRAVITATIONAL_CONSTANT } from "../config/constants";
 import type { BodyRecord } from "../types/body";
 import type { OrbitalElementRecord } from "../types/orbit";
+import {
+  localReferenceProvider,
+  MOON_EARTH_REFERENCE_RANGE,
+  SUN_ORIGIN_TOLERANCE_METERS
+} from "./localReferenceProvider";
+import type {
+  ReferenceLookupContext,
+  ReferenceLookupResult,
+  ReferenceProvider,
+  ValidationReferenceRange
+} from "./referenceAdapter";
 
 export type ValidationStatus = "PASS" | "WARN" | "ERROR";
 
-export interface DistanceReferenceRange {
-  minMeters: number;
-  maxMeters: number;
-  warnToleranceMeters: number;
-}
+export type DistanceReferenceRange = ValidationReferenceRange;
 
 export interface ContinuityHistory {
   positionsMeters: Map<string, THREE.Vector3>;
@@ -62,14 +69,8 @@ export interface BuildValidationSummaryInput {
   positionsMeters: Map<string, THREE.Vector3>;
   secondsSinceEpoch: number;
   continuityHistory?: ContinuityHistory | null;
+  referenceProvider?: ReferenceProvider;
 }
-
-const SUN_ORIGIN_TOLERANCE_METERS = 1_000;
-const MOON_EARTH_RANGE: DistanceReferenceRange = {
-  minMeters: 3.5e8,
-  maxMeters: 4.1e8,
-  warnToleranceMeters: 2.5e7
-};
 
 export const VALIDATION_REFERENCE_RANGES: Record<string, DistanceReferenceRange> = {
   sun: {
@@ -77,17 +78,8 @@ export const VALIDATION_REFERENCE_RANGES: Record<string, DistanceReferenceRange>
     maxMeters: SUN_ORIGIN_TOLERANCE_METERS,
     warnToleranceMeters: 0
   },
-  moon: MOON_EARTH_RANGE
+  moon: MOON_EARTH_REFERENCE_RANGE
 };
-
-function rangeFromElement(element: OrbitalElementRecord): DistanceReferenceRange {
-  const semiMajorAxisMeters = element.a_au * AU_METERS;
-  return {
-    minMeters: semiMajorAxisMeters * (1 - element.e),
-    maxMeters: semiMajorAxisMeters * (1 + element.e),
-    warnToleranceMeters: Math.max(semiMajorAxisMeters * 0.025, 10_000)
-  };
-}
 
 function combineStatus(statuses: ValidationStatus[]): ValidationStatus {
   if (statuses.includes("ERROR")) {
@@ -164,14 +156,20 @@ function validateContinuity(
   return stepDistanceMeters > allowedStep ? "WARN" : "PASS";
 }
 
-function buildSunValidation(position: THREE.Vector3 | undefined): BodyValidationRow {
+function buildSunValidation(
+  position: THREE.Vector3 | undefined,
+  reference: ReferenceLookupResult
+): BodyValidationRow {
   const messages: string[] = [];
   const finitePosition = isFinitePosition(position) ? "PASS" : "ERROR";
   const distanceFromSunMeters = isFinitePosition(position) ? position!.length() : undefined;
-  const rangeStatus = validateRange(distanceFromSunMeters, VALIDATION_REFERENCE_RANGES.sun);
+  const rangeStatus = reference.available ? validateRange(distanceFromSunMeters, reference.range) : "WARN";
 
   if (finitePosition === "ERROR") {
     messages.push("Sun position is not finite.");
+  }
+  if (!reference.available) {
+    messages.push(reference.note);
   }
   if (rangeStatus !== "PASS") {
     messages.push("Sun reference position is not near the origin.");
@@ -192,7 +190,10 @@ function buildSunValidation(position: THREE.Vector3 | undefined): BodyValidation
   };
 }
 
-export function validateMoonEarthDistance(distanceMeters: number | undefined): MoonDistanceCheck {
+export function validateMoonEarthDistance(
+  distanceMeters: number | undefined,
+  referenceRange: DistanceReferenceRange = MOON_EARTH_REFERENCE_RANGE
+): MoonDistanceCheck {
   const messages: string[] = [];
   if (!Number.isFinite(distanceMeters)) {
     return {
@@ -204,7 +205,7 @@ export function validateMoonEarthDistance(distanceMeters: number | undefined): M
     };
   }
 
-  const status = validateRange(distanceMeters, MOON_EARTH_RANGE);
+  const status = validateRange(distanceMeters, referenceRange);
   if (status === "WARN") {
     messages.push("Moon-Earth distance is outside the approximate local reference range.");
   }
@@ -220,11 +221,18 @@ export function validateMoonEarthDistance(distanceMeters: number | undefined): M
 
 export function buildValidationSummary(input: BuildValidationSummaryInput): ValidationSummary {
   const rows: BodyValidationRow[] = [];
+  const referenceProvider = input.referenceProvider ?? localReferenceProvider;
+  const referenceContext: ReferenceLookupContext = {
+    bodies: input.bodies,
+    bodyById: input.bodyById,
+    orbitalElementByBodyId: input.orbitalElementByBodyId
+  };
 
   for (const body of input.bodies) {
     const position = input.positionsMeters.get(body.id);
+    const reference = referenceProvider.getBodyReference(body.id, referenceContext);
     if (body.id === "sun") {
-      rows.push(buildSunValidation(position));
+      rows.push(buildSunValidation(position, reference));
       continue;
     }
 
@@ -240,8 +248,7 @@ export function buildValidationSummary(input: BuildValidationSummaryInput): Vali
       body.id === "moon" && isFinitePosition(position) && isFinitePosition(earthPosition)
         ? position!.distanceTo(earthPosition!)
         : distanceFromSunMeters;
-    const range = body.id === "moon" ? MOON_EARTH_RANGE : element ? rangeFromElement(element) : undefined;
-    const rangeStatus = range ? validateRange(rangeDistance, range) : "WARN";
+    const rangeStatus = reference.available ? validateRange(rangeDistance, reference.range) : "WARN";
     const continuityStatus = validateContinuity(
       body,
       element,
@@ -253,8 +260,8 @@ export function buildValidationSummary(input: BuildValidationSummaryInput): Vali
     if (finitePosition === "ERROR") {
       messages.push("Position contains NaN or Infinity.");
     }
-    if (!element && body.id !== "moon") {
-      messages.push("No orbital elements are available for validation.");
+    if (!reference.available) {
+      messages.push(reference.note);
     }
     if (rangeStatus === "WARN") {
       messages.push("Distance is outside the approximate local reference range.");
@@ -280,10 +287,12 @@ export function buildValidationSummary(input: BuildValidationSummaryInput): Vali
 
   const earthPosition = input.positionsMeters.get("earth");
   const moonPosition = input.positionsMeters.get("moon");
+  const moonReference = referenceProvider.getMoonEarthDistanceReference(referenceContext);
   const moonDistance = validateMoonEarthDistance(
     isFinitePosition(earthPosition) && isFinitePosition(moonPosition)
       ? moonPosition!.distanceTo(earthPosition!)
-      : undefined
+      : undefined,
+    moonReference.available ? moonReference.range : MOON_EARTH_REFERENCE_RANGE
   );
 
   const positionRows = rows.map<PositionTableRow>((row) => ({
@@ -308,4 +317,3 @@ export function buildValidationSummary(input: BuildValidationSummaryInput): Vali
     errorCount
   };
 }
-

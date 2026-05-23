@@ -36,7 +36,7 @@ Completed:
 
 ## V0.4 - Validation Dashboard And Reference Comparison
 
-Current phase:
+Completed:
 
 - Lightweight Validation Dashboard.
 - Local approximate reference range comparison.
@@ -53,11 +53,28 @@ Known limits:
 - Validation checks numerical sanity and broad orbital ranges, not high-precision ephemeris accuracy.
 - Moon-Earth range is approximate and intended for future replacement.
 
-## V0.5 / V1 - Kepler Model Precision Improvement
+## V0.5 - Reference Adapter And Validation Report Export
+
+Current phase:
+
+- Reference adapter interface for future higher-precision validation providers.
+- Local approximate reference provider using existing V0.4 sanity ranges.
+- Validation report generation from the current validation summary.
+- JSON export for stable readable validation reports.
+- CSV export for practical per-body validation rows.
+- Lightweight Validation Report panel near the existing validation UI.
+
+Known limits:
+
+- V0.5 still uses local approximate sanity checking, not NASA/JPL Horizons precision data.
+- The adapter is a preparation layer for later ephemeris providers and does not add SPICE or external datasets.
+- Exported reports reflect the current local validation state, not scientific-grade external validation.
+
+## V1 - Kepler Model Precision Improvement
 
 Next phase:
 
-- Better orbital validation against external reference data.
+- Better orbital validation against future external reference data.
 - More accurate Moon model.
 - Optional richer date/time input.
 - More precise simulation date controls.
@@ -103,4 +120,3 @@ Future phase:
 - Observer mode.
 - Multi-scale navigation.
 - Data provenance panel.
-

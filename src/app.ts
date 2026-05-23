@@ -6,6 +6,7 @@ import {
 } from "./astronomy/julianDate";
 import { formatSimulationDate } from "./astronomy/time";
 import { computeKeplerPositionMeters } from "./astronomy/kepler";
+import { localReferenceProvider } from "./astronomy/localReferenceProvider";
 import { computeMoonPositionMeters } from "./astronomy/moonModel";
 import { rotationRadiansForElapsedSeconds } from "./astronomy/rotationModel";
 import {
@@ -36,6 +37,7 @@ import { formatTimeScale } from "./ui/formatters";
 import type { SimulationMode } from "./ui/modeSwitcher";
 import { PositionTable } from "./ui/positionTable";
 import { ValidationDashboard } from "./ui/validationDashboard";
+import { ValidationReportPanel } from "./ui/validationReportPanel";
 
 interface BodyNode {
   body: BodyRecord;
@@ -59,7 +61,9 @@ export class SolarSystemApp {
   private readonly controlPanel: ControlPanel;
   private readonly debugPanel: DebugPanel;
   private readonly validationDashboard: ValidationDashboard;
+  private readonly validationReportPanel: ValidationReportPanel;
   private readonly positionTable: PositionTable;
+  private readonly referenceProvider = localReferenceProvider;
   private readonly clock = new THREE.Clock();
   private readonly bodyNodes = new Map<string, BodyNode>();
   private readonly scenePositions = new Map<string, THREE.Vector3>();
@@ -131,6 +135,13 @@ export class SolarSystemApp {
     });
     this.debugPanel = new DebugPanel(this.sidePanel);
     this.validationDashboard = new ValidationDashboard(this.sidePanel);
+    this.validationReportPanel = new ValidationReportPanel(this.sidePanel, () => ({
+      appVersion: this.data.simulationConfig.version,
+      simulationDate: formatSimulationDate(this.secondsSinceEpoch),
+      julianDate: secondsSinceJ2000ToJulianDate(this.secondsSinceEpoch),
+      summary: this.latestValidationSummary,
+      referenceProvider: this.referenceProvider.metadata
+    }));
     this.positionTable = new PositionTable(this.sidePanel);
 
     this.mode = this.data.simulationConfig.default_mode;
@@ -409,11 +420,13 @@ export class SolarSystemApp {
       orbitalElementByBodyId: this.data.orbitalElementByBodyId,
       positionsMeters: this.physicalPositionsMeters,
       secondsSinceEpoch: this.secondsSinceEpoch,
-      continuityHistory: this.validationContinuityHistory
+      continuityHistory: this.validationContinuityHistory,
+      referenceProvider: this.referenceProvider
     });
 
     this.latestValidationSummary = summary;
     this.validationDashboard.update(summary);
+    this.validationReportPanel.update(summary);
     this.positionTable.update(summary.positionRows);
     this.validationContinuityHistory = {
       positionsMeters: clonePositions(this.physicalPositionsMeters),

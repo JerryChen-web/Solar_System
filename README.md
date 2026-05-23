@@ -2,7 +2,7 @@
 
 Solar_System is a Vite + TypeScript + Three.js Solar System visualization MVP. It uses local demo data, a Kepler orbit model, and a modular rendering/UI structure that can grow toward higher-precision astronomy data pipelines later.
 
-V0.4 adds a lightweight local validation dashboard and reference comparison layer on top of V0.3. It still does not call NASA APIs, download textures, use SPICE, or include large datasets.
+V0.5 adds a reference adapter layer and validation report export on top of V0.4. It still uses local approximate sanity-check references only; it does not call NASA APIs, download textures, use SPICE, or include large datasets.
 
 ## Requirements
 
@@ -24,7 +24,16 @@ npm.cmd audit --audit-level=moderate
 
 Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 
-## V0.4 Features
+## V0.5 Features
+
+- Reference adapter interface for future higher-precision providers without rewriting the UI.
+- Local approximate reference provider using the existing V0.4 distance sanity ranges.
+- Validation Report panel with JSON and CSV export controls.
+- Structured validation reports with app version, simulation date, Julian Date, generated timestamp, totals, per-body rows, position rows, and Moon-Earth distance check.
+- Safe export fallbacks for missing, `NaN`, or `Infinity` values.
+- Vitest coverage for reference lookup, report serialization, CSV export, and report panel helpers.
+
+## V0.4 Features Preserved
 
 - Validation Dashboard with PASS/WARN/ERROR status for Sun, planets, and Moon.
 - Sun special validation as the reference body near origin.
@@ -61,11 +70,12 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 - Invalid date input shows a message and leaves the simulation date unchanged.
 - Use `Pause` / `Play` to stop or resume simulation time without changing the selected time scale.
 - Use `Reset` to return the simulation date to the configured J2000 epoch.
-- Open the `Debug`, `Validation Dashboard`, and `Position Table` sections in the right panel to inspect validation state.
+- Open the `Debug`, `Validation Dashboard`, `Validation Report`, and `Position Table` sections in the right panel to inspect and export validation state.
 
 ## Current Accuracy Limits
 
-- V0.4 reference comparison is local approximate validation, not NASA/JPL Horizons precision comparison.
+- V0.5 reference comparison is local approximate validation, not NASA/JPL Horizons precision comparison.
+- The reference adapter is a preparation layer for future higher-precision sources, not a precision data source by itself.
 - Planet distance ranges are based on local orbital elements and sanity tolerances.
 - The Moon-Earth distance check uses a local approximate range, not a high-precision lunar ephemeris.
 - Planet positions are suitable for visualization and structural validation, not high-precision scientific measurement.
@@ -87,4 +97,3 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 - `docs`: design notes and version plan.
 - `tools`: future data pipeline notes.
 - `tests`: Vitest test coverage.
-
