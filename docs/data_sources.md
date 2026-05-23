@@ -1,6 +1,6 @@
 # Data Sources
 
-V0.1 uses local demo data only. No network calls are made by the app.
+V0.8 uses local demo data and local user-selected import files only. No network calls are made by the app.
 
 Primary future sources are tracked in `data/processed/source_registry.json`:
 
@@ -12,3 +12,4 @@ Primary future sources are tracked in `data/processed/source_registry.json`:
 
 OpenSpace, Celestia, and Stellarium are architecture references only. Their code and assets must not be copied into this project without a separate license review.
 
+V0.8 fixture source switching does not add live NASA/JPL Horizons fetching, SPICE integration, external APIs, backend services, deployment, or large datasets.

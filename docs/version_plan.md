@@ -87,9 +87,9 @@ Known limits:
 - The sample fixture is generated from the current local demo model and is not an external authority.
 - Future V1 can replace fixture contents with real reference data while keeping the UI and report export layer stable.
 
-## V0.7 - Real Reference Data Contract And Import Pipeline
+## V0.7 - Completed Real Reference Data Contract And Import Pipeline
 
-Current phase:
+Completed:
 
 - Local reference data contract for future real reference datasets.
 - Source metadata, coordinate system, source type, unit, tolerance, and body row validation.
@@ -104,6 +104,27 @@ Known limits:
 - V0.7 does not add SPICE kernels, SPICE parsing, or large external datasets.
 - Converted sample data is still demo data from the bundled local model, not an external precision authority.
 - Future V1 can feed real exported reference files through the contract while preserving the Precision Report UI and export layer.
+
+## V0.8 - Completed Fixture Source Switching
+
+Completed:
+
+- Local fixture source manager for default, sample import, local import, and fallback-default states.
+- App starts on the bundled V0.6 default fixture.
+- Converted V0.7 sample import fixture can be activated from the Reference Import panel.
+- User-selected local JSON import can be converted through the existing V0.7 pipeline.
+- Active fixture/source indicator is visible in the main controls.
+- Safe fallback to default fixture for malformed JSON, blocked conversion, fatal converted fixture errors, or zero converted rows.
+- Precision Report uses the currently active fixture source.
+- Validation Dashboard, Validation Report exports, Precision Report exports, and Reference Import report behavior are preserved.
+- Browser title and visible version label are updated to V0.8.0 through central app metadata.
+
+Known limits:
+
+- V0.8 remains local-only and offline-only.
+- V0.8 does not add live NASA/JPL Horizons fetching, SPICE kernels, backend services, databases, deployment, or large datasets.
+- Local import files must match the V0.7 JSON contract to convert into fixture rows.
+- GitHub Pages preparation remains future work.
 
 ## V1 - Kepler Model Precision Improvement
 

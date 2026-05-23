@@ -95,6 +95,17 @@ button:disabled {
   word-break: break-word;
 }
 
+.fixture-source-line {
+  margin: -4px 0 12px;
+  border-left: 3px solid rgba(255, 207, 117, 0.72);
+  color: #ffe1a0;
+  background: rgba(255, 207, 117, 0.08);
+  padding: 7px 9px;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .status-line {
   margin: 6px 0;
   color: #afc0dc;
@@ -299,6 +310,78 @@ button:disabled {
   color: #93a4c1;
   font-size: 12px;
   line-height: 1.35;
+}
+
+.reference-source-active {
+  color: #eef4ff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.reference-source-status {
+  border: 1px solid rgba(171, 190, 224, 0.18);
+  border-radius: 6px;
+  color: #b7c7e7;
+  background: rgba(10, 17, 29, 0.66);
+  padding: 8px 9px;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.reference-source-status.is-pass {
+  border-color: rgba(102, 224, 163, 0.34);
+  color: #bdf3d1;
+  background: rgba(38, 126, 85, 0.14);
+}
+
+.reference-source-status.is-warn {
+  border-color: rgba(255, 198, 92, 0.38);
+  color: #ffe0a6;
+  background: rgba(147, 101, 31, 0.16);
+}
+
+.reference-source-status.is-error {
+  border-color: rgba(255, 126, 112, 0.42);
+  color: #ffc1b8;
+  background: rgba(142, 54, 48, 0.18);
+}
+
+.reference-source-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.reference-source-actions button {
+  border: 1px solid rgba(171, 190, 224, 0.32);
+  border-radius: 6px;
+  color: #f5f8ff;
+  background: #1a2942;
+  padding: 8px 7px;
+  cursor: pointer;
+}
+
+.reference-source-actions button:hover {
+  background: #223753;
+}
+
+.reference-source-file {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  color: #d7e2f7;
+  font-size: 12px;
+}
+
+.reference-source-file input {
+  min-width: 0;
+  max-width: 100%;
+  color: #b7c7e7;
+  font-size: 12px;
 }
 
 .validation-report-actions,

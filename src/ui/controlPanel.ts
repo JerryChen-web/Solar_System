@@ -5,6 +5,7 @@ import { modeLabels } from "./modeSwitcher";
 import { findPresetBySeconds, timeScalePresets } from "./timeScalePresets";
 
 interface ControlPanelOptions {
+  appLabel: string;
   simulationConfig: SimulationConfig;
   onTimeScaleChange: (secondsPerRealSecond: number) => void;
   onPauseChange: (paused: boolean) => void;
@@ -17,6 +18,7 @@ interface ControlPanelOptions {
 
 export class ControlPanel {
   private readonly dateElement: HTMLElement;
+  private readonly fixtureSourceElement: HTMLElement;
   private readonly speedValueElement: HTMLElement;
   private readonly speedInput: HTMLInputElement;
   private readonly presetSelect: HTMLSelectElement;
@@ -33,10 +35,14 @@ export class ControlPanel {
     panel.className = "panel controls";
 
     const title = document.createElement("h1");
-    title.textContent = "Solar_System";
+    title.textContent = options.appLabel;
 
     this.dateElement = document.createElement("div");
     this.dateElement.className = "simulation-date";
+
+    this.fixtureSourceElement = document.createElement("div");
+    this.fixtureSourceElement.className = "fixture-source-line";
+    this.fixtureSourceElement.textContent = "Active fixture: loading";
 
     this.selectedBodyElement = document.createElement("div");
     this.selectedBodyElement.className = "status-line";
@@ -132,6 +138,7 @@ export class ControlPanel {
     panel.append(
       title,
       this.dateElement,
+      this.fixtureSourceElement,
       this.selectedBodyElement,
       this.followTargetElement,
       speedLabel,
@@ -184,6 +191,10 @@ export class ControlPanel {
 
   setSimulationDate(dateText: string): void {
     this.dateElement.textContent = dateText;
+  }
+
+  setFixtureSourceSummary(summary: string): void {
+    this.fixtureSourceElement.textContent = summary;
   }
 
   setSelectedBody(bodyId: string | null): void {
