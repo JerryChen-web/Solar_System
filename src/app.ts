@@ -35,13 +35,35 @@ import { createAtmosphere } from "./rendering/atmosphere";
 import { createBodyMesh } from "./rendering/bodyMesh";
 import { createCamera, createOrbitControls } from "./rendering/camera";
 import { CameraFollowController } from "./rendering/cameraFollowController";
+import {
+  advanceCameraTransition,
+  createBodyFocusPose,
+  createCameraPose,
+  createCameraTransition,
+  type CameraPose,
+  type CameraTransitionState
+} from "./rendering/cameraTransition";
+import { getFocusSceneConfig } from "./rendering/focusSceneManager";
 import { HtmlLabelLayer } from "./rendering/labels";
 import { addLights } from "./rendering/lights";
 import { createOrbitPath } from "./rendering/orbitPath";
+import { getAtmosphereVisual } from "./rendering/planetVisuals";
+import { createRenderPipeline, type RenderPipeline } from "./rendering/postProcessing";
 import { createRenderer, resizeRenderer } from "./rendering/renderer";
-import { createSaturnRing } from "./rendering/rings";
+import { createPlanetRingSystem } from "./rendering/ringVisuals";
 import { createScene } from "./rendering/scene";
 import { pickBodyId, SelectionHighlighter } from "./rendering/selection";
+import {
+  createOverviewMode,
+  enterBodyFocusMode,
+  exitBodyFocusMode,
+  isEditableKeyboardTarget,
+  isFocusBodyId,
+  type SceneMode
+} from "./rendering/sceneModes";
+import { createAsteroidBelt, createKuiperBelt } from "./rendering/smallBodyBelts";
+import { createStarfield } from "./rendering/starfield";
+import { createSunGlow } from "./rendering/sunVisuals";
 import type { BodyRecord } from "./types/body";
 import { BodyInfoPanel } from "./ui/bodyInfoPanel";
 import { ControlPanel } from "./ui/controlPanel";
@@ -53,6 +75,7 @@ import { PrecisionReportPanel } from "./ui/precisionReportPanel";
 import { ReferenceImportPanel } from "./ui/referenceImportPanel";
 import { ValidationDashboard } from "./ui/validationDashboard";
 import { ValidationReportPanel } from "./ui/validationReportPanel";
+import { ViewportHud } from "./ui/viewportHud";
 import sampleReferenceFixtureJson from "../data/reference/sample_fixture_v0_6.json";
 import sampleReferenceImportJson from "../data/reference/sample_import_v0_7.json";
 
@@ -69,10 +92,13 @@ export class SolarSystemApp {
   private readonly viewport: HTMLElement;
   private readonly sidePanel: HTMLElement;
   private readonly renderer: THREE.WebGLRenderer;
+  private readonly renderPipeline: RenderPipeline;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly controls: ReturnType<typeof createOrbitControls>;
+  private readonly overviewControlRange: { minDistance: number; maxDistance: number };
   private readonly cameraFollowController: CameraFollowController;
   private readonly labelLayer: HtmlLabelLayer;
+  private readonly viewportHud: ViewportHud;
   private readonly selectionHighlighter = new SelectionHighlighter();
   private readonly bodyInfoPanel: BodyInfoPanel;
   private readonly controlPanel: ControlPanel;
@@ -97,6 +123,10 @@ export class SolarSystemApp {
   private selectedBodyId: string | null = "sun";
   private followTargetId: string | null = null;
   private mode: SimulationMode = "kepler";
+  private sceneMode: SceneMode = createOverviewMode();
+  private overviewCameraPose: CameraPose | null = null;
+  private activeCameraTransition: CameraTransitionState | null = null;
+  private activeCameraTransitionTarget: "overview" | "focus" | null = null;
   private orbitCount = 0;
   private validationContinuityHistory: ContinuityHistory | null = null;
   private latestValidationSummary: ValidationSummary | null = null;
@@ -132,10 +162,24 @@ export class SolarSystemApp {
     this.camera = createCamera(this.data.visualConfig, this.viewport);
     this.renderer = createRenderer(this.viewport);
     this.controls = createOrbitControls(this.camera, this.renderer.domElement);
+    this.overviewControlRange = {
+      minDistance: this.controls.minDistance,
+      maxDistance: this.controls.maxDistance
+    };
+    this.renderPipeline = createRenderPipeline(this.renderer, this.scene, this.camera, this.viewport);
     this.cameraFollowController = new CameraFollowController(this.camera, this.controls);
-    this.labelLayer = new HtmlLabelLayer(this.viewport);
+    this.labelLayer = new HtmlLabelLayer(this.viewport, (bodyId) => {
+      this.selectBody(bodyId);
+      this.enterFocusMode(bodyId);
+    });
+    this.viewportHud = new ViewportHud(this.viewport, () => {
+      this.exitFocusMode();
+    });
 
     addLights(this.scene, this.data.visualConfig);
+    this.scene.add(createStarfield());
+    this.scene.add(createAsteroidBelt(this.data.visualConfig));
+    this.scene.add(createKuiperBelt(this.data.visualConfig));
     this.createBodyNodes();
     this.createOrbitPaths();
 
@@ -201,6 +245,7 @@ export class SolarSystemApp {
 
     this.mode = this.data.simulationConfig.default_mode;
     this.selectBody("sun");
+    this.updateViewportHud();
     this.registerEvents();
     this.updateBodies();
   }
@@ -212,6 +257,7 @@ export class SolarSystemApp {
 
   dispose(): void {
     cancelAnimationFrame(this.animationFrameId);
+    this.renderPipeline.dispose();
     this.renderer.dispose();
   }
 
@@ -220,11 +266,25 @@ export class SolarSystemApp {
       const radiusSceneUnits = visualRadiusForBody(body, this.data.visualConfig);
       const mesh = createBodyMesh(body, radiusSceneUnits);
 
-      if (body.visual.rings) {
-        mesh.add(createSaturnRing(radiusSceneUnits));
+      if (body.type === "star") {
+        mesh.add(createSunGlow(radiusSceneUnits));
       }
-      if (body.visual.atmosphere) {
-        mesh.add(createAtmosphere(radiusSceneUnits));
+
+      const ringSystem = createPlanetRingSystem(body.id, radiusSceneUnits);
+      if (ringSystem) {
+        mesh.add(ringSystem);
+      }
+
+      const atmosphereVisual = getAtmosphereVisual(body);
+      if (atmosphereVisual) {
+        mesh.add(
+          createAtmosphere(
+            radiusSceneUnits,
+            atmosphereVisual.color,
+            atmosphereVisual.opacity,
+            atmosphereVisual.scale
+          )
+        );
       }
 
       this.scene.add(mesh);
@@ -266,6 +326,7 @@ export class SolarSystemApp {
   private registerEvents(): void {
     window.addEventListener("resize", () => {
       resizeRenderer(this.renderer, this.camera, this.viewport);
+      this.renderPipeline.resize(this.viewport.clientWidth, this.viewport.clientHeight);
     });
 
     this.renderer.domElement.addEventListener("pointerdown", (event) => {
@@ -273,10 +334,22 @@ export class SolarSystemApp {
         event,
         this.camera,
         this.renderer.domElement,
-        [...this.bodyNodes.values()].map((node) => node.mesh)
+        [...this.bodyNodes.values()].map((node) => node.mesh),
+        [...this.bodyNodes.entries()].map(([bodyId, node]) => ({
+          bodyId,
+          object: node.mesh,
+          radiusSceneUnits: node.radiusSceneUnits
+        }))
       );
       if (bodyId) {
         this.selectBody(bodyId);
+        this.enterFocusMode(bodyId);
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && this.sceneMode.kind === "body-focus" && !isEditableKeyboardTarget(event.target)) {
+        this.exitFocusMode();
       }
     });
   }
@@ -291,13 +364,16 @@ export class SolarSystemApp {
 
     this.updateBodies();
     this.updateValidationSummary();
-    this.updateFollowCamera(deltaSeconds);
+    this.updateSceneModeCamera(deltaSeconds);
+    if (this.sceneMode.kind === "overview" && !this.activeCameraTransition) {
+      this.updateFollowCamera(deltaSeconds);
+    }
     this.controls.update();
     this.labelLayer.update(this.camera);
     const simulationDateText = formatSimulationDate(this.secondsSinceEpoch);
     this.controlPanel.setSimulationDate(simulationDateText);
     this.updateDebugPanel(simulationDateText);
-    this.renderer.render(this.scene, this.camera);
+    this.renderPipeline.render();
   };
 
   private updateBodies(): void {
@@ -387,6 +463,108 @@ export class SolarSystemApp {
     }
 
     this.updateSelectedBodyInfo(bodyId);
+  }
+
+  private enterFocusMode(bodyId: string): void {
+    if (!isFocusBodyId(bodyId)) {
+      return;
+    }
+
+    const node = this.bodyNodes.get(bodyId);
+    const targetPosition = this.scenePositions.get(bodyId);
+    const focusConfig = getFocusSceneConfig(bodyId);
+    if (!node || !targetPosition || !focusConfig) {
+      return;
+    }
+
+    if (this.sceneMode.kind === "overview") {
+      this.overviewCameraPose = createCameraPose(this.camera.position, this.controls.target);
+    }
+
+    this.sceneMode = enterBodyFocusMode(this.sceneMode, bodyId);
+    this.controls.enabled = false;
+    this.controls.minDistance = Math.max(node.radiusSceneUnits * 2.2, 0.65);
+    this.controls.maxDistance = Math.max(focusConfig.minCameraDistance * 6, node.radiusSceneUnits * 28);
+    const from = createCameraPose(this.camera.position, this.controls.target);
+    const to = createBodyFocusPose(targetPosition, node.radiusSceneUnits, focusConfig);
+    this.activeCameraTransition = createCameraTransition(from, to, 1.55);
+    this.activeCameraTransitionTarget = "focus";
+    this.updateViewportHud();
+  }
+
+  private exitFocusMode(): void {
+    if (this.sceneMode.kind !== "body-focus") {
+      return;
+    }
+
+    const to =
+      this.overviewCameraPose ??
+      createCameraPose(
+        new THREE.Vector3(...this.data.visualConfig.camera.default_position),
+        new THREE.Vector3()
+      );
+
+    this.sceneMode = exitBodyFocusMode();
+    this.controls.enabled = false;
+    this.controls.minDistance = this.overviewControlRange.minDistance;
+    this.controls.maxDistance = this.overviewControlRange.maxDistance;
+    this.activeCameraTransition = createCameraTransition(
+      createCameraPose(this.camera.position, this.controls.target),
+      to,
+      1.25
+    );
+    this.activeCameraTransitionTarget = "overview";
+    this.updateViewportHud();
+  }
+
+  private updateSceneModeCamera(deltaSeconds: number): void {
+    if (this.activeCameraTransition) {
+      if (this.activeCameraTransitionTarget === "focus" && this.sceneMode.kind === "body-focus") {
+        const node = this.bodyNodes.get(this.sceneMode.bodyId);
+        const targetPosition = this.scenePositions.get(this.sceneMode.bodyId);
+        const focusConfig = getFocusSceneConfig(this.sceneMode.bodyId);
+        if (node && targetPosition && focusConfig) {
+          this.activeCameraTransition.to = createBodyFocusPose(
+            targetPosition,
+            node.radiusSceneUnits,
+            focusConfig
+          );
+        }
+      }
+
+      const result = advanceCameraTransition(this.activeCameraTransition, deltaSeconds);
+      this.activeCameraTransition = result.done ? null : result.transition;
+      this.camera.position.copy(result.pose.position);
+      this.controls.target.copy(result.pose.target);
+      if (result.done) {
+        this.controls.enabled = true;
+        this.activeCameraTransitionTarget = null;
+      }
+      return;
+    }
+
+    if (this.sceneMode.kind !== "body-focus") {
+      return;
+    }
+
+    const targetPosition = this.scenePositions.get(this.sceneMode.bodyId);
+    if (!targetPosition) {
+      return;
+    }
+
+    const previousTarget = this.controls.target.clone();
+    const alpha = 1 - Math.exp(-10 * Math.max(deltaSeconds, 0));
+    this.controls.target.lerp(targetPosition, alpha);
+    this.camera.position.add(this.controls.target.clone().sub(previousTarget));
+  }
+
+  private updateViewportHud(): void {
+    const focusConfig =
+      this.sceneMode.kind === "body-focus" ? getFocusSceneConfig(this.sceneMode.bodyId) : undefined;
+    this.viewportHud.update({
+      mode: this.sceneMode,
+      focusConfig
+    });
   }
 
   private updateSelectedBodyInfo(bodyId: string): void {

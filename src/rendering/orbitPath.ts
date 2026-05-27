@@ -26,11 +26,12 @@ export function createOrbitPath(
 
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
   const material = new THREE.LineBasicMaterial({
-    color: body.type === "moon" ? "#8f96a3" : "#566173",
+    color: body.type === "moon" ? "#9aa4b5" : "#63718a",
     transparent: true,
-    opacity: visualConfig.orbits.line_opacity,
+    opacity: body.type === "moon" ? 0.42 : visualConfig.orbits.line_opacity * 0.74,
     depthWrite: false
   });
-  return new THREE.LineLoop(geometry, material);
+  const orbitPath = new THREE.LineLoop(geometry, material);
+  orbitPath.name = `${body.name_en} orbit path`;
+  return orbitPath;
 }
-

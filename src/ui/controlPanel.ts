@@ -133,7 +133,7 @@ export class ControlPanel {
 
     const modeNote = document.createElement("p");
     modeNote.className = "mode-note";
-    modeNote.textContent = "N-body is scaffolded for V2; V0.3 runs the Kepler path with local approximate astronomy data.";
+    modeNote.textContent = "N-body is scaffolded for V2; V1.0 runs the Kepler path with local approximate astronomy data.";
 
     panel.append(
       title,

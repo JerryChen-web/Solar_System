@@ -1,15 +1,21 @@
 import * as THREE from "three";
 
-export function createAtmosphere(radiusSceneUnits: number): THREE.Mesh {
-  const geometry = new THREE.SphereGeometry(radiusSceneUnits * 1.12, 48, 24);
+export function createAtmosphere(
+  radiusSceneUnits: number,
+  color = "#7fb7ff",
+  opacity = 0.18,
+  scale = 1.12
+): THREE.Mesh {
+  const geometry = new THREE.SphereGeometry(radiusSceneUnits * scale, 64, 32);
   const material = new THREE.MeshBasicMaterial({
-    color: "#7fb7ff",
+    color,
     transparent: true,
-    opacity: 0.18,
-    depthWrite: false
+    opacity,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide
   });
   const atmosphere = new THREE.Mesh(geometry, material);
-  atmosphere.name = "Atmosphere placeholder";
+  atmosphere.name = "Procedural atmosphere shell";
   return atmosphere;
 }
-

@@ -1,8 +1,8 @@
 # Solar_System
 
-Solar_System is a Vite + TypeScript + Three.js Solar System visualization MVP. It uses local demo data, a Kepler orbit model, and a modular rendering/UI structure that can grow toward higher-precision astronomy data pipelines later.
+Solar_System is a Vite + TypeScript + Three.js Solar System visualization and validation app. It uses local demo data, a Kepler orbit model, procedural rendering, and a modular UI structure that can grow toward higher-precision astronomy data pipelines later.
 
-V0.9 prepares the app for future GitHub Pages deployment at `https://JerryChen-web.github.io/Solar_System/`. It adds production base-path configuration, a conservative GitHub Pages workflow, deployment documentation, and local production preview guidance while preserving the offline-only V0.8 fixture source switching workflow.
+V1.0.0 is the first public stable visual release at `https://JerryChen-web.github.io/Solar_System/`. It upgrades the V0.9 GitHub Pages foundation into a NASA-like interactive public demo with deep-space rendering, procedural planet visuals, improved rings, asteroid/Kuiper belts, and click-to-enter planet ecosystem focus mode.
 
 ## Requirements
 
@@ -26,6 +26,19 @@ npm.cmd audit --audit-level=moderate
 
 Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 After `npm.cmd run build` and `npm.cmd run preview`, check the production preview at `http://127.0.0.1:4173/Solar_System/`.
+
+## V1.0.0 Features
+
+- First public stable visual release for GitHub Pages.
+- Browser title and visible app label updated to `Solar_System V1.0.0`.
+- NASA-like procedural visual upgrade with deeper starfield, stronger Sun glow, tuned planet materials, and improved orbit readability.
+- Improved Saturn rings with layered translucent bands, plus subtle Uranus rings.
+- Deterministic asteroid belt between Mars and Jupiter and sparse procedural Kuiper belt beyond Neptune.
+- Click Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, or Neptune to enter its local ecosystem focus mode.
+- Press `ESC` or `Back to solar system` to return smoothly to overview mode.
+- Focus mode preserves object selection, body details, Follow / Stop Follow state, time controls, validation dashboards, report exports, reference import, fixture switching, and fallback reset.
+- GitHub Pages deployment compatibility remains active for `/Solar_System/`.
+- Procedural/generated runtime visuals only; no large texture packs, external runtime assets, live API calls, SPICE, backend, or database.
 
 ## V0.9 Features
 
@@ -111,6 +124,8 @@ After `npm.cmd run build` and `npm.cmd run preview`, check the production previe
 ## How To Use
 
 - Select a body by clicking it in the 3D view.
+- Click a supported planet to enter its local ecosystem focus mode.
+- Press `ESC` or the `Back to solar system` button to return to the solar-system overview.
 - Press `Follow` to make the camera target smoothly follow the selected body.
 - Press `Stop Follow` to return to free camera targeting.
 - Use the time slider for custom speed, or choose a preset from the preset dropdown.
@@ -125,6 +140,7 @@ After `npm.cmd run build` and `npm.cmd run preview`, check the production previe
 
 ## Current Accuracy Limits
 
+- V1.0 visual upgrades are procedural display enhancements, not new scientific data sources.
 - V0.8 fixture source switching is local-only and offline-only.
 - V0.9 GitHub Pages preparation changes only static build/deployment plumbing.
 - V0.7 import is local contract validation and fixture conversion only; it is not live NASA/JPL Horizons or SPICE validation.
@@ -140,11 +156,10 @@ After `npm.cmd run build` and `npm.cmd run preview`, check the production previe
 
 - NASA/JPL Horizons is not connected yet.
 - The import pipeline does not fetch external data; it only processes bundled or future local JSON files.
-- GitHub Pages deployment workflow is prepared, but GitHub repository Pages settings may still need to be set to GitHub Actions.
 - Full N-body propagation is not active yet.
-- Large textures are not used.
+- Large textures are not used; V1.0 uses procedural runtime materials and lightweight point systems.
 - The app still uses local demo data and Kepler mode as the primary simulation path.
-- No React, Next.js, Tailwind, Docker, database, SPICE, asteroids, comets, spacecraft, or deployment pipeline is included.
+- No React, Next.js, Tailwind, Docker, database, SPICE, live small-body catalogs, comets, spacecraft, backend service, or real-time ephemeris feed is included.
 
 ## Data Layout
 

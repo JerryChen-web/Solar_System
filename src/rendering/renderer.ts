@@ -5,6 +5,8 @@ export function createRenderer(container: HTMLElement): THREE.WebGLRenderer {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.08;
   container.appendChild(renderer.domElement);
   return renderer;
 }
@@ -20,4 +22,3 @@ export function resizeRenderer(
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 }
-

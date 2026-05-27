@@ -9,12 +9,21 @@ interface LabelRecord {
 export class HtmlLabelLayer {
   private readonly labels = new Map<string, LabelRecord>();
 
-  constructor(private readonly container: HTMLElement) {}
+  constructor(
+    private readonly container: HTMLElement,
+    private readonly onLabelClick?: (bodyId: string) => void
+  ) {}
 
   addLabel(bodyId: string, text: string, target: THREE.Object3D, offsetY: number): void {
     const element = document.createElement("div");
     element.className = "body-label";
+    element.dataset.bodyId = bodyId;
+    element.setAttribute("aria-label", `${text} label`);
     element.textContent = text;
+    element.addEventListener("click", (event) => {
+      event.stopPropagation();
+      this.onLabelClick?.(bodyId);
+    });
     this.container.appendChild(element);
     this.labels.set(bodyId, { element, target, offsetY });
   }
@@ -47,4 +56,3 @@ export class HtmlLabelLayer {
     }
   }
 }
-

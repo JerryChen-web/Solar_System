@@ -1,6 +1,6 @@
 # GitHub Pages Deployment
 
-V0.9.0 prepares Solar_System for future static GitHub Pages deployment.
+V1.0.0 preserves the V0.9 static GitHub Pages deployment foundation.
 
 Expected public URL:
 
@@ -43,4 +43,4 @@ In GitHub repository Settings > Pages, Source may need to be set to GitHub Actio
 
 ## Limits
 
-This is static deployment only. V0.9.0 does not add a backend, API service, database, SPICE integration, NASA/JPL live data, external runtime fetches, or large datasets.
+This is static deployment only. V1.0.0 does not add a backend, API service, database, SPICE integration, NASA/JPL live data, external runtime fetches, or large datasets.

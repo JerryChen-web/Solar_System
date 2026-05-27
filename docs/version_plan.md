@@ -144,11 +144,29 @@ Known limits:
 - GitHub repository Pages settings may still need to be set to GitHub Actions.
 - V0.9 does not add live NASA/JPL Horizons fetching, SPICE, N-body activation, backend services, databases, UI rewrites, or large datasets.
 
-## V1 - Kepler Model Precision Improvement
+## V1.0.0 - Completed Public Stable Visual Release
+
+Completed:
+
+- First public stable visual release on the V0.9 GitHub Pages foundation.
+- Deep procedural rendering pass with stronger Sun glow, tuned planet materials, improved orbit readability, and deeper starfield.
+- Layered Saturn rings and subtle Uranus ring cue.
+- Deterministic asteroid belt between Mars and Jupiter.
+- Sparse procedural Kuiper belt beyond Neptune.
+- Planet ecosystem focus mode for Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.
+- Click-to-enter focus mode and `ESC` / button return to overview.
+- V1.0.0 browser title and visible app label.
+- Existing selection, Follow / Stop Follow state, time controls, validation panels, report exports, reference import, fixture switching, and fallback reset preserved.
+
+Known limits:
+
+- V1.0.0 visual improvements are procedural display enhancements, not new physical datasets.
+- V1.0.0 does not add live NASA/JPL Horizons fetching, SPICE, backend services, databases, spacecraft, live small-body catalogs, or large texture packs.
+
+## V1.1 - Kepler Model Precision Improvement
 
 Next phase:
 
-- First public stable GitHub Pages release after V0.9 verification.
 - Better orbital validation against real local reference imports prepared through the V0.7 contract.
 - More accurate Moon model.
 - Optional richer date/time input.

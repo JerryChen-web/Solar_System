@@ -1,16 +1,55 @@
 import * as THREE from "three";
 
+export interface PickableBodyTarget {
+  bodyId: string;
+  object: THREE.Object3D;
+  radiusSceneUnits: number;
+}
+
 export function pickBodyId(
   event: PointerEvent,
   camera: THREE.Camera,
   domElement: HTMLElement,
-  pickableMeshes: THREE.Object3D[]
+  pickableMeshes: THREE.Object3D[],
+  fallbackTargets: PickableBodyTarget[] = []
 ): string | null {
   const rect = domElement.getBoundingClientRect();
   const pointer = new THREE.Vector2(
     ((event.clientX - rect.left) / rect.width) * 2 - 1,
     -((event.clientY - rect.top) / rect.height) * 2 + 1
   );
+
+  const pointerPixels = new THREE.Vector2(event.clientX - rect.left, event.clientY - rect.top);
+  let nearest: { bodyId: string; distancePixels: number } | null = null;
+
+  for (const target of fallbackTargets) {
+    const worldPosition = new THREE.Vector3();
+    target.object.getWorldPosition(worldPosition);
+    const projected = worldPosition.clone().project(camera);
+    if (projected.z < -1 || projected.z > 1) {
+      continue;
+    }
+
+    const screenPosition = new THREE.Vector2(
+      (projected.x * 0.5 + 0.5) * rect.width,
+      (-projected.y * 0.5 + 0.5) * rect.height
+    );
+    const distancePixels = screenPosition.distanceTo(pointerPixels);
+    const cameraDistance = Math.max(camera.position.distanceTo(worldPosition), 0.001);
+    const projectedRadiusPixels = (target.radiusSceneUnits / cameraDistance) * rect.height * 2.1;
+    const thresholdPixels = THREE.MathUtils.clamp(projectedRadiusPixels, 14, 36);
+
+    if (distancePixels <= thresholdPixels && (!nearest || distancePixels < nearest.distancePixels)) {
+      nearest = {
+        bodyId: target.bodyId,
+        distancePixels
+      };
+    }
+  }
+
+  if (nearest) {
+    return nearest.bodyId;
+  }
 
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(pointer, camera);

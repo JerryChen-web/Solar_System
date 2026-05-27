@@ -48,8 +48,9 @@ button:disabled {
   min-height: 0;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 45%, rgba(255, 216, 133, 0.12), transparent 13rem),
-    #05070d;
+    radial-gradient(circle at 48% 42%, rgba(255, 214, 122, 0.15), transparent 16rem),
+    radial-gradient(circle at 72% 18%, rgba(86, 134, 200, 0.08), transparent 19rem),
+    #02040b;
 }
 
 .viewport canvas {
@@ -65,15 +66,18 @@ button:disabled {
   min-width: 0;
   padding: 16px;
   border-left: 1px solid rgba(171, 190, 224, 0.18);
-  background: rgba(8, 13, 24, 0.94);
+  background:
+    linear-gradient(180deg, rgba(11, 18, 31, 0.98), rgba(6, 10, 19, 0.96)),
+    rgba(8, 13, 24, 0.94);
   overflow-y: auto;
 }
 
 .panel {
-  border: 1px solid rgba(171, 190, 224, 0.18);
+  border: 1px solid rgba(183, 204, 238, 0.2);
   border-radius: 8px;
-  background: rgba(17, 26, 42, 0.82);
+  background: rgba(14, 23, 38, 0.84);
   padding: 14px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
 }
 
 .controls h1,
@@ -521,10 +525,10 @@ button:disabled {
   position: absolute;
   top: 0;
   left: 0;
-  pointer-events: none;
-  border: 1px solid rgba(180, 199, 230, 0.24);
+  pointer-events: auto;
+  border: 1px solid rgba(194, 215, 246, 0.3);
   border-radius: 6px;
-  background: rgba(5, 9, 16, 0.7);
+  background: rgba(3, 7, 14, 0.76);
   color: #edf5ff;
   padding: 3px 6px;
   font-size: 12px;
@@ -532,6 +536,7 @@ button:disabled {
   white-space: nowrap;
   text-shadow: 0 1px 2px #000;
   will-change: transform;
+  cursor: pointer;
 }
 
 .body-label.is-selected {
@@ -539,10 +544,72 @@ button:disabled {
   color: #ffe1a0;
 }
 
+.viewport-hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: grid;
+  gap: 6px;
+  max-width: min(460px, calc(100% - 32px));
+  border: 1px solid rgba(199, 218, 250, 0.22);
+  border-radius: 8px;
+  background: rgba(3, 7, 15, 0.58);
+  padding: 10px 12px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+
+.viewport-hud-badge {
+  justify-self: start;
+  border: 1px solid rgba(255, 218, 138, 0.62);
+  border-radius: 999px;
+  color: #ffe1a0;
+  background: rgba(255, 207, 117, 0.1);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.viewport-hud-title {
+  color: #f7fbff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.viewport-hud-subtitle {
+  color: #b8c8df;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.viewport-hud-back {
+  justify-self: start;
+  pointer-events: auto;
+  border: 1px solid rgba(199, 218, 250, 0.34);
+  border-radius: 6px;
+  color: #f5f8ff;
+  background: rgba(31, 51, 78, 0.86);
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.viewport-hud-back:hover {
+  background: rgba(43, 70, 104, 0.92);
+}
+
 @media (max-width: 780px) {
   .app-shell {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .viewport-hud {
+    top: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
   }
 
   .side-panel {
