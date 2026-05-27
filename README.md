@@ -2,7 +2,7 @@
 
 Solar_System is a Vite + TypeScript + Three.js Solar System visualization MVP. It uses local demo data, a Kepler orbit model, and a modular rendering/UI structure that can grow toward higher-precision astronomy data pipelines later.
 
-V0.8 adds local fixture source switching on top of the V0.7 import pipeline. The app starts on the bundled V0.6 reference fixture, can switch to the converted V0.7 sample import fixture, can test a user-selected local JSON import file, and safely falls back to the default fixture when conversion is not usable. It remains offline-only and does not add GitHub Pages deployment, NASA APIs, SPICE, backend services, or large datasets.
+V0.9 prepares the app for future GitHub Pages deployment at `https://JerryChen-web.github.io/Solar_System/`. It adds production base-path configuration, a conservative GitHub Pages workflow, deployment documentation, and local production preview guidance while preserving the offline-only V0.8 fixture source switching workflow.
 
 ## Requirements
 
@@ -19,12 +19,27 @@ npm.cmd run dev
 npm.cmd run test
 npm.cmd run typecheck
 npm.cmd run build
+npm.cmd run verify
+npm.cmd run preview
 npm.cmd audit --audit-level=moderate
 ```
 
 Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
+After `npm.cmd run build` and `npm.cmd run preview`, check the production preview at `http://127.0.0.1:4173/Solar_System/`.
 
-## V0.8 Features
+## V0.9 Features
+
+- GitHub Pages deployment preparation for the repository path `/Solar_System/`.
+- Vite production builds use the base path `/Solar_System/`.
+- Local dev mode remains rooted at `/` and still works at `http://127.0.0.1:5173/`.
+- Conservative GitHub Actions Pages workflow under `.github/workflows/deploy-pages.yml`.
+- Empty `public/.nojekyll` file so GitHub Pages serves Vite assets directly.
+- Deployment guide and V1.0 public release checklist under `docs`.
+- Browser title and visible app label updated to `Solar_System V0.9.0`.
+- V0.8 fixture source switching remains preserved.
+- Offline-only behavior remains preserved.
+
+## V0.8 Features Preserved
 
 - Central app version label from project metadata, shown in the browser title and UI.
 - Active fixture source indicator in the main controls.
@@ -111,6 +126,7 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 ## Current Accuracy Limits
 
 - V0.8 fixture source switching is local-only and offline-only.
+- V0.9 GitHub Pages preparation changes only static build/deployment plumbing.
 - V0.7 import is local contract validation and fixture conversion only; it is not live NASA/JPL Horizons or SPICE validation.
 - V0.6 precision comparison remains local fixture-based comparison, not NASA/JPL Horizons precision comparison.
 - The reference adapter is a preparation layer for future higher-precision sources, not a precision data source by itself.
@@ -124,7 +140,7 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 
 - NASA/JPL Horizons is not connected yet.
 - The import pipeline does not fetch external data; it only processes bundled or future local JSON files.
-- GitHub Pages deployment is not configured yet; public deployment is a later version task.
+- GitHub Pages deployment workflow is prepared, but GitHub repository Pages settings may still need to be set to GitHub Actions.
 - Full N-body propagation is not active yet.
 - Large textures are not used.
 - The app still uses local demo data and Kepler mode as the primary simulation path.
@@ -139,3 +155,7 @@ Open the local URL printed by Vite, usually `http://127.0.0.1:5173/`.
 - `docs`: design notes and version plan.
 - `tools`: future data pipeline notes.
 - `tests`: Vitest test coverage.
+
+## Deployment Preparation
+
+See `docs/deployment.md` for GitHub Pages setup and preview steps. See `docs/v1_public_release_checklist.md` for the future V1.0 release checklist.

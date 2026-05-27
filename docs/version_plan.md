@@ -126,10 +126,29 @@ Known limits:
 - Local import files must match the V0.7 JSON contract to convert into fixture rows.
 - GitHub Pages preparation remains future work.
 
+## V0.9 - Completed GitHub Pages Preparation
+
+Completed:
+
+- Vite production build base path prepared for `/Solar_System/`.
+- Local dev remains served from the root path at `127.0.0.1`.
+- GitHub Pages deployment workflow scaffold added for pushes to `main`.
+- Empty `public/.nojekyll` added for direct Vite asset serving.
+- Deployment guide and V1.0 public release checklist added.
+- Version metadata updated to V0.9.0.
+- V0.8 fixture source switching and offline-only behavior preserved.
+
+Known limits:
+
+- V0.9 prepares deployment but is not the first public stable release.
+- GitHub repository Pages settings may still need to be set to GitHub Actions.
+- V0.9 does not add live NASA/JPL Horizons fetching, SPICE, N-body activation, backend services, databases, UI rewrites, or large datasets.
+
 ## V1 - Kepler Model Precision Improvement
 
 Next phase:
 
+- First public stable GitHub Pages release after V0.9 verification.
 - Better orbital validation against real local reference imports prepared through the V0.7 contract.
 - More accurate Moon model.
 - Optional richer date/time input.

@@ -13,3 +13,5 @@ Primary future sources are tracked in `data/processed/source_registry.json`:
 OpenSpace, Celestia, and Stellarium are architecture references only. Their code and assets must not be copied into this project without a separate license review.
 
 V0.8 fixture source switching does not add live NASA/JPL Horizons fetching, SPICE integration, external APIs, backend services, deployment, or large datasets.
+
+V0.9 adds GitHub Pages deployment preparation only. It does not add new runtime data sources, live network fetching, SPICE kernels, backend services, databases, or large datasets.
